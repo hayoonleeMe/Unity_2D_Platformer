@@ -11,6 +11,10 @@ public class Movement2D : MonoBehaviour
     [SerializeField]
     private Vector3 moveDirection = Vector3.zero;
 
+    // 점프 속도
+    [SerializeField]
+    private float jumpSpeed = 0.0f;
+
     private void Update()
     {
        // 이동방향으로 이동한다.
@@ -21,6 +25,12 @@ public class Movement2D : MonoBehaviour
     public void MoveTo(Vector3 direction)
     {
         moveDirection = direction;
+    }
+
+    // 오브젝트를 점프시키는 메소드
+    public void Jump()
+    {
+        Debug.Log("Jump");
     }
 
 }
