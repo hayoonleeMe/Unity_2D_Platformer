@@ -322,7 +322,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: c5a98ad9c83039d4d88b469d2162ae23, type: 2}
-  jumpSpeed: 5
+  jumpAmount: 20
+  gravityScale: 7
+  fallingGravityScale: 17
 --- !u!114 &467330927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +442,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!61 &467330932
 BoxCollider2D:
