@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidBody2D;
 
+    [SerializeField]
+    private StageData stageData;
+
     // 점프 속도
     [SerializeField]
     private float jumpSpeed = 0.0f;
@@ -58,6 +61,13 @@ public class PlayerController : MonoBehaviour
         bool space = Input.GetKeyDown(KeyCode.Space);
         if (space && !isJump) Jump();
 
+    }
+
+    private void LateUpdate()
+    {
+        // 플레이어의 이동반경을 제한한다.
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x, stageData.LimitMax.x),
+                                         Mathf.Clamp(transform.position.y, stageData.LimitMin.y, stageData.LimitMax.y));
     }
 
     // 플레이어 오브젝트를 점프시키는 메소드
