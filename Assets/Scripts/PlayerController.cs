@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
         else if (x > 0) spriteRenderer.flipX = false;
 
         // 플레이어를 이동시킨다.
-        movement2D.MoveTo(new Vector3(x, 0.0f, 0.0f));
+        movement2D.MoveTo(new Vector2(x, 0.0f));
 
         // 걷기 애니메이션을 실행한다.
         // 점프 중에는 점프 애니메이션만 실행한다.
