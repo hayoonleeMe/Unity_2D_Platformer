@@ -12,9 +12,18 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private StageData stageData;
 
-    // 점프 속도
+    // 점프에 가해지는 운동량
     [SerializeField]
     private float jumpAmount = 20.0f;
+
+    // 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
+    private float jumpOffset = 0.05f;
+
+    // 최대 점프 운동량
+    private const float MAX_JUMP_AMOUNT = 30.0f;
+
+    // 최소 점프 운동량
+    private const float MIN_JUMP_AMOUNT = 20.0f;
 
     // 오브젝트에만 적용되는 중력 값
     [SerializeField]
@@ -23,6 +32,9 @@ public class PlayerController : MonoBehaviour
     // 오브젝트에만 적용하는 오브젝트가 떨어질때의 중력 값
     [SerializeField]
     private float fallingGravityScale = 17.0f;
+
+    // 스페이스바를 누르고 있는지를 나타내는 상태변수
+    private bool isSpaceDown = false;
 
     // 플레이어가 점프 중인지를 나타내는 상태변수와 프로퍼티
     private bool isJump = false;
@@ -67,10 +79,29 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("onWalk", walk);
         }
 
-        // 스페이스바를 눌러 플레이어를 점프시킨다.
-        bool space = Input.GetKeyDown(KeyCode.Space);
-        if (space && !isJump) Jump();
+        // 스페이스바를 키다운중이 아닐때만 스페이스바를 누르는지 체크한다.
+        if (!isSpaceDown)
+        {
+            isSpaceDown = Input.GetKeyDown(KeyCode.Space);
+        }
 
+        // 점프중이 아니면서 스페이스바를 키다운 중이면 점프를 준비한다.
+        // 스페이스바를 키다운할수록 플레이어가 점프하는 높이가 커진다.
+        if (isSpaceDown && !isJump)
+        {
+            PrepareJump();
+        }
+
+        // 스페이스바를 떼면 정해진 점프 운동량만큼 플레이어가 점프한다.
+        bool spaceUp = Input.GetKeyUp(KeyCode.Space);
+        if (spaceUp && !isJump)
+        {
+            isSpaceDown = false;
+            Jump();
+            jumpAmount = MIN_JUMP_AMOUNT;
+        }
+
+        // 플레이어 오브젝트가 점프를 할 때 중력 값을 조절한다.
         if (isJump)
         {
             // 위로 올라갈 때
@@ -92,6 +123,16 @@ public class PlayerController : MonoBehaviour
         // 플레이어의 이동반경을 제한한다.
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x + boxCollider2D.size.x / 2, stageData.LimitMax.x - boxCollider2D.size.x / 2),
                                          Mathf.Clamp(transform.position.y, stageData.LimitMin.y + boxCollider2D.size.y / 2, stageData.LimitMax.y - boxCollider2D.size.y / 2));
+    }
+
+    // 스페이스바를 키다운할 때 호출되는 함수
+    // 점프에 가해지는 운동량이 점점 늘어난다.
+    private void PrepareJump()
+    {
+        // 매 프레임마다 점프 운동량이 늘어난다.
+        jumpAmount += jumpOffset;
+        // 최대 점프 운동량을 넘지 않는다.
+        jumpAmount = Mathf.Clamp(jumpAmount, MIN_JUMP_AMOUNT, MAX_JUMP_AMOUNT);
     }
 
     // 플레이어 오브젝트를 점프시키는 메소드
