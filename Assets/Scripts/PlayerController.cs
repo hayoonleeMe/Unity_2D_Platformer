@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -24,6 +25,9 @@ public class PlayerController : MonoBehaviour
 
     // 최소 점프 운동량
     private const float MIN_JUMP_AMOUNT = 20.0f;
+
+    // 플레이어의 상태를 체크하는 시간
+    private const float CHECK_SECONDS = 0.07f;
 
     // 오브젝트에만 적용되는 중력 값
     [SerializeField]
@@ -57,6 +61,12 @@ public class PlayerController : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidBody2D = GetComponent<Rigidbody2D>();
         boxCollider2D = GetComponent<BoxCollider2D>();
+    }
+
+    private void Start()
+    {
+        // 플레이어가 공중에 있는지 체크하는 코루틴을 실행한다.
+        StartCoroutine(CheckPlayerIsAir());
     }
 
     private void Update()
@@ -115,7 +125,6 @@ public class PlayerController : MonoBehaviour
                 rigidBody2D.gravityScale = fallingGravityScale;
             }
         }
-
     }
 
     private void LateUpdate()
@@ -138,16 +147,35 @@ public class PlayerController : MonoBehaviour
     // 플레이어 오브젝트를 점프시키는 메소드
     private void Jump()
     {
-        // 걷기 애니메이션이 실행중이면 중지한다.
-        if (animator.GetBool("onWalk"))
-        {
-            animator.SetBool("onWalk", false);
-        }
-
-        // 점프 애니메이션을 실행시킨다.
-        animator.SetBool("onJump", true);
         // 운동량을 더해 점프시킨다.
         rigidBody2D.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
-        isJump = true;
+    }
+
+    // 플레이어가 공중에 있는지 CHECK_SECONDS 초마다 체크하는 코루틴
+    IEnumerator CheckPlayerIsAir()
+    {
+        while (true)
+        {
+            // 플레이어가 지면을 밟고 있을 때
+            if (rigidBody2D.velocity.y == 0)
+            {
+                isJump = false;
+                animator.SetBool("onFall", false);
+            }
+            // 플레이어가 공중에 있을 때
+            else
+            {
+                // 공중에서 걷는 애니메이션이 실행중이라면 중단한다.
+                if (animator.GetBool("onWalk"))
+                {
+                    animator.SetBool("onWalk", false);
+                }
+
+                isJump = true;
+                animator.SetBool("onFall", true);
+            }
+
+            yield return new WaitForSeconds(CHECK_SECONDS);
+        }
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraAlignment : MonoBehaviour
@@ -9,7 +7,11 @@ public class CameraAlignment : MonoBehaviour
     [SerializeField]
     private StageData stageData;
 
-    private float minLimitX, maxLimitX;
+    // 카메라가 이동하지 않도록 제한하는 최소 x좌표
+    private float minLimitX;
+
+    // 카메라가 이동하지 않도록 제한하는 최대 x좌표
+    private float maxLimitX;
 
     private void Awake()
     {
@@ -19,29 +21,14 @@ public class CameraAlignment : MonoBehaviour
         maxLimitX = stageData.LimitMax.x - halfViewPortXSize;
     }
 
-    private void Update()
-    {
-        //Debug.Log(worldPoint.x);
-    }
-
-    // Update is called once per frame
     private void LateUpdate()
     {
-
-
+        // 플레이어 오브젝트가 이동한 후 카메라를 플레이어의 위치로 이동시킨다.
         Vector3 cameraPosition = transform.position;
-        // 카메라를 플레이어의 위치로 이동
         cameraPosition.x = playerTransform.position.x;
         cameraPosition.y = playerTransform.position.y;
+
+        // 카메가가 최소, 최대 x좌표를 넘지 않도록 조정하여 이동시킨다.
         transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX), cameraPosition.y, cameraPosition.z);
-
-        // 이동했을때 스테이지의 끝에 카메라의 범위가 걸리는지 확인
-        //minX = (Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f))).x;
-        //maxX = (Camera.main.ViewportToWorldPoint(new Vector3(1f, 0.5f, 0f))).x;
-
-        //if (minX < stageData.LimitMin.x || maxX > stageData.LimitMax.x)
-        //{
-        //    transform.position = new Vector3(originalCamera.x, transform.position.y, transform.position.z);
-        //}
     }
 }
