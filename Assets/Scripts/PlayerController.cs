@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
         if (isJump)
         {
             // 위로 올라갈 때
-            if (rigidBody2D.velocity.y >= 0)
+            if (rigidBody2D.velocity.y > 0)
             {
                 rigidBody2D.gravityScale = gravityScale;
             }
@@ -161,6 +161,7 @@ public class PlayerController : MonoBehaviour
             {
                 isJump = false;
                 animator.SetBool("onFall", false);
+                rigidBody2D.gravityScale = 1.0f;
             }
             // 플레이어가 공중에 있을 때
             else
