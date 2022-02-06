@@ -14,17 +14,18 @@ public class PlayerController : MonoBehaviour
     private StageData stageData;
 
     // 점프에 가해지는 운동량
-    [SerializeField]
     private float jumpAmount = 20.0f;
 
     // 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
     private float jumpOffset = 0.05f;
 
+    [SerializeField]
     // 최대 점프 운동량
-    private const float MAX_JUMP_AMOUNT = 30.0f;
+    private float MAX_JUMP_AMOUNT = 30.0f;
 
+    [SerializeField]
     // 최소 점프 운동량
-    private const float MIN_JUMP_AMOUNT = 20.0f;
+    private float MIN_JUMP_AMOUNT = 20.0f;
 
     // 플레이어의 상태를 체크하는 시간
     private const float CHECK_SECONDS = 0.07f;

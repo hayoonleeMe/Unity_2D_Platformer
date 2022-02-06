@@ -374,6 +374,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerTransform: {fileID: 467330929}
   stageData: {fileID: 11400000, guid: c5a98ad9c83039d4d88b469d2162ae23, type: 2}
+  offsetY: 2
 --- !u!20 &519420031
 Camera:
   m_ObjectHideFlags: 0
