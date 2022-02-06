@@ -29,6 +29,9 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 상태를 체크하는 시간
     private const float CHECK_SECONDS = 0.07f;
 
+    // 오차 값
+    private const double ERROR_VALUE = 2e12;
+
     // 오브젝트에만 적용되는 중력 값
     [SerializeField]
     private float gravityScale = 7.0f;
@@ -157,8 +160,9 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             // 플레이어가 지면을 밟고 있을 때
-            if (rigidBody2D.velocity.y == 0)
+            if (Mathf.Approximately(rigidBody2D.velocity.y, 0.0f))
             {
+                //Debug.Log("Player is on air");
                 isJump = false;
                 animator.SetBool("onFall", false);
                 rigidBody2D.gravityScale = 1.0f;
@@ -166,6 +170,7 @@ public class PlayerController : MonoBehaviour
             // 플레이어가 공중에 있을 때
             else
             {
+                //Debug.Log("Player isn't on air");
                 // 공중에서 걷는 애니메이션이 실행중이라면 중단한다.
                 if (animator.GetBool("onWalk"))
                 {
