@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Background : MonoBehaviour
@@ -31,7 +30,7 @@ public class Background : MonoBehaviour
         while (true)
         {
             float bgEdgeXRightPos = transform.position.x + transform.localScale.x / 2;
-            float bdEdgeXLeftPos = transform.position.x - transform.localScale.x / 2;
+            float bgEdgeXLeftPos = transform.position.x - transform.localScale.x / 2;
 
             float cameraEdgeXRightPos = Camera.main.transform.position.x + halfCameraRectXSize;
             float cameraEdgeXLeftPos = Camera.main.transform.position.x - halfCameraRectXSize;
@@ -42,7 +41,7 @@ public class Background : MonoBehaviour
                 transform.position += new Vector3(transform.localScale.x / 2, 0, 0);
             }
             // 플레이어가 왼쪽으로 이동하다가 배경 스프라이트를 옮기는 경우
-            else if (cameraEdgeXLeftPos <= bdEdgeXLeftPos + offsetX)
+            else if (cameraEdgeXLeftPos <= bgEdgeXLeftPos + offsetX)
             {
                 transform.position -= new Vector3(transform.localScale.x / 2, 0, 0);
             }

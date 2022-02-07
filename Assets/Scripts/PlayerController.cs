@@ -19,12 +19,12 @@ public class PlayerController : MonoBehaviour
     // 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
     private float jumpOffset = 0.05f;
 
-    [SerializeField]
     // 최대 점프 운동량
+    [SerializeField]
     private float MAX_JUMP_AMOUNT = 30.0f;
 
-    [SerializeField]
     // 최소 점프 운동량
+    [SerializeField]
     private float MIN_JUMP_AMOUNT = 20.0f;
 
     // 플레이어의 상태를 체크하는 시간
@@ -160,7 +160,6 @@ public class PlayerController : MonoBehaviour
             // 플레이어가 지면을 밟고 있을 때
             if (Mathf.Approximately(rigidBody2D.velocity.y, 0.0f))
             {
-                //Debug.Log("Player is on air");
                 isJump = false;
                 animator.SetBool("onFall", false);
                 rigidBody2D.gravityScale = 1.0f;
@@ -168,7 +167,6 @@ public class PlayerController : MonoBehaviour
             // 플레이어가 공중에 있을 때
             else
             {
-                //Debug.Log("Player isn't on air");
                 // 공중에서 걷는 애니메이션이 실행중이라면 중단한다.
                 if (animator.GetBool("onWalk"))
                 {

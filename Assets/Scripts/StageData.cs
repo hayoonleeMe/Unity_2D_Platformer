@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// 스테이지의 최소, 최대 x, y 좌표를 프로퍼티로 제공하는 클래스
+// Unity Editor 의 Asset 으로 추가할 수 있다.
 [CreateAssetMenu]
 public class StageData : ScriptableObject
 {
