@@ -30,9 +30,6 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 상태를 체크하는 시간
     private const float CHECK_SECONDS = 0.07f;
 
-    // 오차 값
-    private const double ERROR_VALUE = 2e12;
-
     // 오브젝트에만 적용되는 중력 값
     [SerializeField]
     private float gravityScale = 7.0f;

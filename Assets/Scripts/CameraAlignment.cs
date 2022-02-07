@@ -18,17 +18,17 @@ public class CameraAlignment : MonoBehaviour
 
     private void Awake()
     {
-        float halfViewPortXSize = (Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f))).x - 
+        float halfCameraRectXSize = (Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f))).x - 
                                   (Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f))).x;
 
-        float halfViewPortYSize = (Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1.0f, 0f))).y -
+        float halfCameraRectYSize = (Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 1.0f, 0f))).y -
                                   (Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f))).y;
 
-        minLimitX = stageData.LimitMin.x + halfViewPortXSize;
-        maxLimitX = stageData.LimitMax.x - halfViewPortXSize;
+        minLimitX = stageData.LimitMin.x + halfCameraRectXSize;
+        maxLimitX = stageData.LimitMax.x - halfCameraRectXSize;
 
-        minLimitY = stageData.LimitMin.y + halfViewPortYSize;
-        maxLimitY = stageData.LimitMax.y - halfViewPortYSize;
+        minLimitY = stageData.LimitMin.y + halfCameraRectYSize;
+        maxLimitY = stageData.LimitMax.y - halfCameraRectYSize;
     }
 
     private void LateUpdate()
