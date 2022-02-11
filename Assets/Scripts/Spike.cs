@@ -6,19 +6,7 @@ public class Spike : MonoBehaviour
 {
     // 플레이어에게 입히는 스파이크 데미지
     [SerializeField]
-    private float damage = 0.0f;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    private float damage = 1.0f;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
