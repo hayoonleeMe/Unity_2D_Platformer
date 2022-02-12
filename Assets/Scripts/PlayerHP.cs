@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerHP : MonoBehaviour
 {
+    // 플레이어 오브젝트의 스프라이트 렌더러
+    private SpriteRenderer spriteRenderer;
+
     // 캔버스
     [SerializeField]
     private ManageHeart manageHeart;
@@ -28,12 +31,16 @@ public class PlayerHP : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         currentHP = maxHP;
     }
 
     // damage 만큼 플레이어의 체력이 하락한다.
     public void TakeDamage(float damage)
     {
+        StopCoroutine(HitColorAnimation());
+        StartCoroutine(HitColorAnimation());
+
         manageHeart.ApplyHeart(damage);
         currentHP -= damage;
 
@@ -47,4 +54,17 @@ public class PlayerHP : MonoBehaviour
     {
         Debug.Log("Player is Die");
     }
+
+    private IEnumerator HitColorAnimation()
+    {
+        Color temp = spriteRenderer.color;
+        temp.a = 0.3f;
+        spriteRenderer.color = temp;
+
+        yield return new WaitForSeconds(0.1f);
+
+        temp.a = 1.0f;
+        spriteRenderer.color = temp;
+    }
+
 }

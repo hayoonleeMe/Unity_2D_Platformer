@@ -153,7 +153,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // 플레이어가 공중에 있는지 CHECK_SECONDS 초마다 체크하는 코루틴
-    IEnumerator CheckPlayerIsAir()
+    private IEnumerator CheckPlayerIsAir()
     {
         while (true)
         {
