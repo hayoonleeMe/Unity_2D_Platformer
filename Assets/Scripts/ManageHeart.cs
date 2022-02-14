@@ -42,9 +42,13 @@ public class ManageHeart : MonoBehaviour
     // 플레이어의 HP 가 변경되면 호출되는 함수
     public void ApplyHeart(float damage)
     {
+        if (damage == 0)
+        {
+            return;
+        }    
+
         for (int i = (int)playerHP.CurrentHP - 1; i >= (int)playerHP.CurrentHP - damage; --i)
         {
-            Debug.Log(i);
             hearts[i].sprite = heartSprites[EMPTY];
         }
     }

@@ -43,17 +43,11 @@ public class PlayerController : MonoBehaviour
 
     // 플레이어가 점프 중인지를 나타내는 상태변수와 프로퍼티
     private bool isJump = false;
-    public bool IsJump
-    {
-        set
-        {
-            if (isJump != value)
-            {
-                isJump = value;
-            }
-        }
-        get => isJump;
-    }    
+    
+    private bool isHurt = false;
+    public bool IsHurt => isHurt;
+
+    private const float HURT_ANIMATION_SECONDS = 0.3f;
 
     private void Awake()
     {
@@ -158,7 +152,7 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             // 플레이어가 지면을 밟고 있을 때
-            if (Mathf.Approximately(rigidBody2D.velocity.y, 0.0f))
+            if (rigidBody2D.velocity.y == 0.0f)
             {
                 isJump = false;
                 animator.SetBool("onFall", false);
@@ -179,5 +173,42 @@ public class PlayerController : MonoBehaviour
 
             yield return new WaitForSeconds(CHECK_SECONDS);
         }
+    }
+
+    public void MoveBack(float power)
+    {
+        isHurt = true;
+        Vector3 reverseDir = Vector3.zero;
+        reverseDir = -rigidBody2D.velocity.normalized;
+
+        //StartCoroutine(AddMoveForce(reverseDir * power));
+        Vector2 playerVel = rigidBody2D.velocity;
+        rigidBody2D.velocity = Vector2.zero;
+        rigidBody2D.AddForce(new Vector2(-playerVel.normalized.x * power, 2 * power), ForceMode2D.Impulse);
+
+        StartCoroutine(MoveBackRoutine());
+    }
+
+    IEnumerator AddMoveForce(Vector3 targetPosition)
+    {
+        float timeElapsed = 0.0f;
+        Vector3 startPosition = transform.position;
+
+        while (timeElapsed < HURT_ANIMATION_SECONDS)
+        {
+            transform.position = Vector3.Lerp(startPosition, targetPosition, timeElapsed);
+            timeElapsed += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    IEnumerator MoveBackRoutine()
+    {   
+        animator.SetBool("onHurt", true);
+
+        yield return new WaitForSeconds(HURT_ANIMATION_SECONDS);
+
+        animator.SetBool("onHurt", false);
+        isHurt = false;
     }
 }

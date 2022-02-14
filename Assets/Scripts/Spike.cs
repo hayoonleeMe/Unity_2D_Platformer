@@ -12,6 +12,9 @@ public class Spike : MonoBehaviour
     [SerializeField]
     private float hitDelay = 0.5f;
 
+    [SerializeField]
+    private float movebackPower;
+
     // 플레이어 오브젝트
     private GameObject playerObject = null;
 
@@ -31,6 +34,7 @@ public class Spike : MonoBehaviour
             {
                 // 플레이어에게 데미지를 입힌다.
                 playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
+                playerObject.GetComponent<PlayerController>().MoveBack(movebackPower);
             }
 
             // hitDelay 만큼 대기한다.
