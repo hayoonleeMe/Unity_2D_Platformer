@@ -618,10 +618,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: c5a98ad9c83039d4d88b469d2162ae23, type: 2}
-  MAX_JUMP_AMOUNT: 20
-  MIN_JUMP_AMOUNT: 15
-  gravityScale: 7
-  fallingGravityScale: 17
 --- !u!114 &467330927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -635,7 +631,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 200
-  moveDirection: {x: 0, y: 0}
 --- !u!212 &467330928
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1116,11 +1111,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHP: {fileID: 467330934}
+  heartPrefab: {fileID: 5745137804484656458, guid: 6bf111aca7310534abbabfb2ad260d55, type: 3}
   heartSprites:
   - {fileID: 21300000, guid: e7e776282cf40fd4b9f5fb4e7b461eea, type: 3}
   - {fileID: 21300000, guid: 50ea475343e8c984ba36b98a58000fd8, type: 3}
   - {fileID: 21300000, guid: 56df96723c2ff4d4d86669f4ce2d582d, type: 3}
-  heartPrefab: {fileID: 5745137804484656458, guid: 6bf111aca7310534abbabfb2ad260d55, type: 3}
 --- !u!1 &1609979318
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,7 +1329,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 0
-  hitDelay: 1
   movebackPower: 7
 --- !u!1 &1707487730
 GameObject:

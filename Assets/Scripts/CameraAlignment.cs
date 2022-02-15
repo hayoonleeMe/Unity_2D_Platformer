@@ -1,5 +1,4 @@
 using UnityEngine;
-
 public class CameraAlignment : MonoBehaviour
 {
     [SerializeField]
@@ -7,6 +6,7 @@ public class CameraAlignment : MonoBehaviour
     [SerializeField]
     private StageData stageData;
 
+    // 플레이어의 y좌표에 추가되는 값
     [SerializeField]
     private float offsetY = 2.0f;
 

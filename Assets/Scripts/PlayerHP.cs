@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerHP : MonoBehaviour
@@ -11,17 +10,13 @@ public class PlayerHP : MonoBehaviour
     [SerializeField]
     private ManageHeart manageHeart;
 
-    // 플레이어의 최대 체력
+    // 플레이어의 최대 체력과 프로퍼티
     [SerializeField]
-    private float maxHP = 3.0f;
-
-    // maxHP 의 프로퍼티 (only get)
+    private float maxHP;
     public float MaxHP => maxHP;
 
-    // 플레이어의 현재 체력
+    // 플레이어의 현재 체력과 프로퍼티
     private float currentHP;
-
-    // currentHP 의 프로퍼티 (set, get)
     public float CurrentHP
     {
         set => currentHP = Mathf.Clamp(value, 0, maxHP);
@@ -36,9 +31,11 @@ public class PlayerHP : MonoBehaviour
     [SerializeField]
     private float hitDelay;
 
-    private float BlinkDelay = 0.1f;
+    // 깜빡이는 애니메이션의 깜빡임 딜레이
+    private float blinkDelay = 0.1f;
 
-    IEnumerator hitColorAnimation;
+    // HitColorAnimation 의 IEnumerator
+    IEnumerator blinkAnimationRoutine;
 
     private void Awake()
     { 
@@ -48,15 +45,12 @@ public class PlayerHP : MonoBehaviour
 
     private void Start()
     {
-        hitColorAnimation = HitColorAnimation();
+        blinkAnimationRoutine = BlinkAnimationRoutine();
     }
 
     // damage 만큼 플레이어의 체력이 하락한다.
     public void TakeDamage(float damage)
     {
-        //StopCoroutine(HitColorAnimation());
-       //StartCoroutine(HitColorAnimation());
-
         manageHeart.ApplyHeart(damage);
         currentHP -= damage;
 
@@ -70,12 +64,14 @@ public class PlayerHP : MonoBehaviour
         StartCoroutine(HitRoutine());
     }
 
+    // 플레이어가 죽을 때 호출된다.
     private void OnDie()
     {
         Debug.Log("Player is Die");
     }
 
-    private IEnumerator HitColorAnimation()
+    // 깜빡임 애니메이션을 구현하는 코루틴
+    private IEnumerator BlinkAnimationRoutine()
     {
         Color color = spriteRenderer.color;
 
@@ -84,24 +80,25 @@ public class PlayerHP : MonoBehaviour
             color.a = 0.3f;
             spriteRenderer.color = color;
 
-            yield return new WaitForSeconds(BlinkDelay);
+            yield return new WaitForSeconds(blinkDelay);
 
             color.a = 1.0f;
             spriteRenderer.color = color; 
 
-            yield return new WaitForSeconds(BlinkDelay);
+            yield return new WaitForSeconds(blinkDelay);
         }
     }
 
+    // 플레이어가 피격당했을 때 실행되는 코루틴
     private IEnumerator HitRoutine()
     {
         isHit = true;
-        StartCoroutine(hitColorAnimation);
+        StartCoroutine(blinkAnimationRoutine);
 
         yield return new WaitForSeconds(hitDelay);
 
         isHit = false;
-        StopCoroutine(hitColorAnimation);
+        StopCoroutine(blinkAnimationRoutine);
     }
 
 }

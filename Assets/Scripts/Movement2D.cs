@@ -7,11 +7,10 @@ public class Movement2D : MonoBehaviour
 
     // 이동 속도
     [SerializeField]
-    private float moveSpeed = 0.0f;
+    private float moveSpeed;
 
     // 이동 방향
-    [SerializeField]
-    private Vector2 moveDirection = Vector3.zero;
+    private Vector2 moveDirection = Vector2.zero;
 
     private void Awake()
     {

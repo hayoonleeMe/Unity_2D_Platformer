@@ -5,8 +5,11 @@ using UnityEngine;
 [CreateAssetMenu]
 public class StageData : ScriptableObject
 {
+    // ¸ÊÀÇ ÃÖ¼Ò ÁÂÇ¥
     [SerializeField]
     private Vector2 limitMin;
+
+    // ¸ÊÀÇ ÃÖ´ë ÁÂÇ¥
     [SerializeField]
     private Vector2 limitMax;
 

@@ -16,10 +16,10 @@ public class Background : MonoBehaviour
     // 배경 스프라이트를 이동시킬지 결정하는 범위를 정하는 변수
     private float offsetX = 5.0f;
 
-    void Start()
+    private void Start()
     {
         halfCameraRectXSize = (Camera.main.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0f))).x -
-                            (Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f))).x;
+                              (Camera.main.ViewportToWorldPoint(new Vector3(0f, 0.5f, 0f))).x;
 
         StartCoroutine(CheckAlign());
     }

@@ -14,29 +14,25 @@ public class PlayerController : MonoBehaviour
     private StageData stageData;
 
     // 점프에 가해지는 운동량
-    private float jumpAmount = 20.0f;
+    private float jumpAmount = 15.0f;
 
     // 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
     private float jumpOffset = 0.05f;
 
     // 최대 점프 운동량
-    [SerializeField]
-    private float MAX_JUMP_AMOUNT = 30.0f;
+    private const float MAX_JUMP_AMOUNT = 25.0f;
 
     // 최소 점프 운동량
-    [SerializeField]
-    private float MIN_JUMP_AMOUNT = 20.0f;
+    private const float MIN_JUMP_AMOUNT = 15.0f;
 
     // 플레이어의 상태를 체크하는 시간
     private const float CHECK_SECONDS = 0.07f;
 
-    // 오브젝트에만 적용되는 중력 값
-    [SerializeField]
-    private float gravityScale = 7.0f;
+    // 오브젝트에만 적용하는 오브젝트가 올라갈때의 중력 값
+    private const float RISING_GRAVITY_SCALE = 7.0f;
 
     // 오브젝트에만 적용하는 오브젝트가 떨어질때의 중력 값
-    [SerializeField]
-    private float fallingGravityScale = 17.0f;
+    private const float FALLING_GRAVITY_SCALE = 17.0f;
 
     // 스페이스바를 누르고 있는지를 나타내는 상태변수
     private bool isSpaceDown = false;
@@ -44,10 +40,12 @@ public class PlayerController : MonoBehaviour
     // 플레이어가 점프 중인지를 나타내는 상태변수와 프로퍼티
     private bool isJump = false;
     
+    // 플레이어가 피격되었는지를 나타내는 상태변수와 프로퍼티
     private bool isHurt = false;
     public bool IsHurt => isHurt;
 
-    private const float HURT_ANIMATION_SECONDS = 0.3f;
+    // 피격 애니메이션 재생시간
+    private const float HURT_ANIMATION_DURATION = 0.3f;
 
     private void Awake()
     {
@@ -112,12 +110,12 @@ public class PlayerController : MonoBehaviour
             // 위로 올라갈 때
             if (rigidBody2D.velocity.y > 0)
             {
-                rigidBody2D.gravityScale = gravityScale;
+                rigidBody2D.gravityScale = RISING_GRAVITY_SCALE;
             }
             // 아래로 내려갈 때
             else
             {
-                rigidBody2D.gravityScale = fallingGravityScale;
+                rigidBody2D.gravityScale = FALLING_GRAVITY_SCALE;
             }
         }
     }
@@ -180,19 +178,18 @@ public class PlayerController : MonoBehaviour
     {
         isHurt = true;
 
-        float playerVelX = rigidBody2D.velocity.normalized.x;
         rigidBody2D.velocity = Vector2.zero;
-        rigidBody2D.AddForce(new Vector2(-playerVelX * power, 2.5f * power), ForceMode2D.Impulse);
+        rigidBody2D.AddForce(new Vector2(0.0f, 2.5f * power), ForceMode2D.Impulse);
 
         StartCoroutine(MoveBackRoutine());
     }
 
-    // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_SECONDS 이후 Hurt 애니메이션을 끄는 코루틴
+    // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴
     IEnumerator MoveBackRoutine()
     {   
         animator.SetBool("onHurt", true);
 
-        yield return new WaitForSeconds(HURT_ANIMATION_SECONDS);
+        yield return new WaitForSeconds(HURT_ANIMATION_DURATION);
 
         animator.SetBool("onHurt", false);
         isHurt = false;

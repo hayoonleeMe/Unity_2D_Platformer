@@ -3,16 +3,22 @@ using UnityEngine.UI;
 
 public class ManageHeart : MonoBehaviour
 {
+    // 플레이어의 playerHP 스크립트 컴포넌트의 객체
     [SerializeField]
     private PlayerHP playerHP;
+
+    // 하트 오브젝트의 프리팹, 기본 스프라이트는 Full 이다.
+    [SerializeField]
+    private Image heartPrefab;
 
     // 하트 스프라이트의 배열, 순서대로 Full, Half, Empty 하트이다.
     [SerializeField]
     private Sprite[] heartSprites;
 
-    // 하트 오브젝트의 프리팹, 기본 스프라이트는 Full 이다.
-    [SerializeField]
-    private Image heartPrefab;
+    // 하트 스프라이트들의 인덱스를 나타내는 상수
+    private const int FULL = 0;
+    private const int HALF = 1;
+    private const int EMPTY = 2;
 
     // 캔버스에 표시될 하트 오브젝트의 배열, 왼쪽부터 0번째이다.
     private Image[] hearts;
@@ -20,11 +26,7 @@ public class ManageHeart : MonoBehaviour
     // 하트 오브젝트 사이의 거리 , 31.8 + 5
     private float offsetX = 36.8f;
 
-    private const int FULL = 0;
-    private const int HALF = 1;
-    private const int EMPTY = 2;
-
-    void Start()
+    private void Start()
     {
         // 최대 체력만큼의 하트 오브젝트를 생성한다.
         hearts = new Image[(int)playerHP.MaxHP];
