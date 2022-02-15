@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidBody2D;
-    private BoxCollider2D boxCollider2D;
 
     // 스테이지의 정보를 저장하는 StageData
     [SerializeField]
@@ -20,7 +19,7 @@ public class PlayerController : MonoBehaviour
     private float jumpOffset = 0.05f;
 
     // 최대 점프 운동량
-    private const float MAX_JUMP_AMOUNT = 25.0f;
+    private const float MAX_JUMP_AMOUNT = 22.0f;
 
     // 최소 점프 운동량
     private const float MIN_JUMP_AMOUNT = 15.0f;
@@ -53,7 +52,6 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidBody2D = GetComponent<Rigidbody2D>();
-        boxCollider2D = GetComponent<BoxCollider2D>();
     }
 
     private void Start()
@@ -123,8 +121,8 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         // 플레이어의 이동반경을 제한한다.
-        transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x + boxCollider2D.size.x / 2, stageData.LimitMax.x - boxCollider2D.size.x / 2),
-                                         Mathf.Clamp(transform.position.y, stageData.LimitMin.y + boxCollider2D.size.y / 2, stageData.LimitMax.y - boxCollider2D.size.y / 2));
+        transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x + spriteRenderer.bounds.size.x / 2, stageData.LimitMax.x - spriteRenderer.bounds.size.x / 2),
+                                         Mathf.Clamp(transform.position.y, stageData.LimitMin.y + spriteRenderer.bounds.size.y / 2, stageData.LimitMax.y - spriteRenderer.bounds.size.y / 2));
     }
 
     // 스페이스바를 키다운할 때 호출되는 함수
@@ -179,7 +177,7 @@ public class PlayerController : MonoBehaviour
         isHurt = true;
 
         rigidBody2D.velocity = Vector2.zero;
-        rigidBody2D.AddForce(new Vector2(0.0f, 2.5f * power), ForceMode2D.Impulse);
+        rigidBody2D.AddForce(new Vector2(0.0f, power), ForceMode2D.Impulse);
 
         StartCoroutine(MoveBackRoutine());
     }
