@@ -807,6 +807,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   manageHeart: {fileID: 1116034323}
   maxHP: 5
+  hitDelay: 1.2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1334,7 +1335,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   hitDelay: 1
-  movebackPower: 10
+  movebackPower: 7
 --- !u!1 &1707487730
 GameObject:
   m_ObjectHideFlags: 0

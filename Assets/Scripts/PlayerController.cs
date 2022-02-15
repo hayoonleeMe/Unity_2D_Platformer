@@ -175,33 +175,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.
     public void MoveBack(float power)
     {
         isHurt = true;
-        Vector3 reverseDir = Vector3.zero;
-        reverseDir = -rigidBody2D.velocity.normalized;
 
-        //StartCoroutine(AddMoveForce(reverseDir * power));
-        Vector2 playerVel = rigidBody2D.velocity;
+        float playerVelX = rigidBody2D.velocity.normalized.x;
         rigidBody2D.velocity = Vector2.zero;
-        rigidBody2D.AddForce(new Vector2(-playerVel.normalized.x * power, 2 * power), ForceMode2D.Impulse);
+        rigidBody2D.AddForce(new Vector2(-playerVelX * power, 2.5f * power), ForceMode2D.Impulse);
 
         StartCoroutine(MoveBackRoutine());
     }
 
-    IEnumerator AddMoveForce(Vector3 targetPosition)
-    {
-        float timeElapsed = 0.0f;
-        Vector3 startPosition = transform.position;
-
-        while (timeElapsed < HURT_ANIMATION_SECONDS)
-        {
-            transform.position = Vector3.Lerp(startPosition, targetPosition, timeElapsed);
-            timeElapsed += Time.deltaTime;
-            yield return null;
-        }
-    }
-
+    // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_SECONDS 이후 Hurt 애니메이션을 끄는 코루틴
     IEnumerator MoveBackRoutine()
     {   
         animator.SetBool("onHurt", true);

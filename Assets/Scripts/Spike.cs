@@ -8,37 +8,22 @@ public class Spike : MonoBehaviour
     [SerializeField]
     private float damage = 1.0f;
 
-    // 스파이크가 플레이어에게 데미지를 입히는 딜레이
-    [SerializeField]
-    private float hitDelay = 0.5f;
-
+    // 스파이크가 플레이어를 밀어내는 힘
     [SerializeField]
     private float movebackPower;
 
-    // 플레이어 오브젝트
+    // 스파이크에 부딪힌 플레이어 오브젝트
     private GameObject playerObject = null;
 
-    // 코루틴 RepeatHitProcess 에서 받아온 IEnumerator
-    private IEnumerator repeatHitProcess;
-
-    private void Start()
+    private void Update()
     {
-        repeatHitProcess = RepeatHitProcess();  
-    }
-
-    private IEnumerator RepeatHitProcess()
-    {
-        while (true)
+        // 플레이어가 스파이크에 닿아 playerObject 를 받아오고,
+        // 플레이어가 피격 당한 상태가 아닐 때
+        if (playerObject != null && playerObject.GetComponent<PlayerHP>().IsHit == false)
         {
-            if (playerObject != null)
-            {
-                // 플레이어에게 데미지를 입힌다.
-                playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
-                playerObject.GetComponent<PlayerController>().MoveBack(movebackPower);
-            }
-
-            // hitDelay 만큼 대기한다.
-            yield return new WaitForSeconds(hitDelay);
+            // 플레이어에게 데미지를 입히고 뒤로 밀리게 한다.
+            playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
+            playerObject.GetComponent<PlayerController>().MoveBack(movebackPower);
         }
     }
 
@@ -47,8 +32,6 @@ public class Spike : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && collision.friction != 0)
         {
             playerObject = collision.gameObject;
-
-            StartCoroutine(repeatHitProcess);
         }
     }
 
@@ -56,7 +39,6 @@ public class Spike : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player") && collision.friction != 0)
         {
-            StopCoroutine(repeatHitProcess);
             playerObject = null;
         }
     }
