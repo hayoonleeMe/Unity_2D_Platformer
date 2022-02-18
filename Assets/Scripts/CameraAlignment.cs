@@ -7,7 +7,6 @@ public class CameraAlignment : MonoBehaviour
     private StageData stageData;
 
     // 플레이어의 y좌표에 추가되는 값
-    [SerializeField]
     private float offsetY = 2.0f;
 
     // 카메라가 이동하지 않도록 제한하는 최소, 최대 x좌표
@@ -36,11 +35,11 @@ public class CameraAlignment : MonoBehaviour
         // 플레이어 오브젝트가 이동한 후 카메라를 플레이어의 위치로 이동시킨다.
         Vector3 cameraPosition = transform.position;
         cameraPosition.x = playerTransform.position.x;
-        //cameraPosition.y = playerTransform.position.y + offsetY;
+        cameraPosition.y = playerTransform.position.y + offsetY;
 
         // 카메가가 최소, 최대 x, y좌표를 넘지 않도록 조정하여 이동시킨다.
-        //transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX), 
-        //                                 Mathf.Clamp(cameraPosition.y, minLimitY, maxLimitY), cameraPosition.z);
-        transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX), cameraPosition.y, cameraPosition.z);
+        transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX),
+                                         Mathf.Clamp(cameraPosition.y, minLimitY, maxLimitY), cameraPosition.z);
+        //transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX), cameraPosition.y, cameraPosition.z);
     }
 }

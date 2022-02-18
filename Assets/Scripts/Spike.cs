@@ -1,5 +1,5 @@
+using System.Collections;
 using UnityEngine;
-
 public class Spike : MonoBehaviour
 {
     // 플레이어에게 입히는 스파이크 데미지
@@ -13,6 +13,13 @@ public class Spike : MonoBehaviour
     // 스파이크에 부딪힌 플레이어 오브젝트
     private GameObject playerObject = null;
 
+    private void Start()
+    {
+
+
+        //StartCoroutine(HitCheckRoutine());
+    }
+
     private void Update()
     {
         // 플레이어가 스파이크에 닿아 playerObject 를 받아오고,
@@ -22,6 +29,14 @@ public class Spike : MonoBehaviour
             // 플레이어에게 데미지를 입히고 뒤로 밀리게 한다.
             playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
             playerObject.GetComponent<PlayerController>().MoveBack(movebackPower);
+        }
+    }
+
+    IEnumerator HitCheckRoutine()
+    {
+        while (true)
+        {
+
         }
     }
 
