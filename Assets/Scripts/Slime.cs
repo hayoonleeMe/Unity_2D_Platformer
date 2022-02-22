@@ -25,7 +25,7 @@ public class Slime : MonoBehaviour
             {
                 Debug.Log("Player is hitted by slime");
                 collision.gameObject.GetComponent<PlayerHP>().TakeDamage(1.0f);
-                collision.gameObject.GetComponent<PlayerController>().MoveBack(15.0f);
+                collision.gameObject.GetComponent<PlayerController>().Bounce(15.0f);
             }
         }
         // 플레이어가 슬라임 위를 밟을 때 슬라임은 죽는다.

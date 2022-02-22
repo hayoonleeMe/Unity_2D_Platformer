@@ -46,12 +46,17 @@ public class PlayerController : MonoBehaviour
     // 피격 애니메이션 재생시간
     private const float HURT_ANIMATION_DURATION = 0.3f;
 
+    // 피격 애니메이션 재생시간을 나타내는 WaitForSeconds 객체
+    private WaitForSeconds hurtAnimationDuration;
+
     private void Awake()
     {
         movement2D = GetComponent<Movement2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidBody2D = GetComponent<Rigidbody2D>();
+
+        hurtAnimationDuration = new WaitForSeconds(HURT_ANIMATION_DURATION);
     }
 
     private void Start()
@@ -70,7 +75,7 @@ public class PlayerController : MonoBehaviour
         else if (x > 0) spriteRenderer.flipX = false;
 
         // 플레이어를 이동시킨다.
-        movement2D.MoveTo(new Vector2(x, 0.0f));
+        movement2D.MoveTo(new Vector3(x, 0.0f, 0.0f));
 
         // 걷기 애니메이션을 실행한다.
         // 점프 중에는 점프 애니메이션만 실행한다.
@@ -172,22 +177,22 @@ public class PlayerController : MonoBehaviour
     }
 
     // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.
-    public void MoveBack(float power)
+    public void Bounce(float power)
     {
         isHurt = true;
 
         rigidBody2D.velocity = Vector2.zero;
         rigidBody2D.AddForce(new Vector2(0.0f, power), ForceMode2D.Impulse);
 
-        StartCoroutine(MoveBackRoutine());
+        StartCoroutine(BounceRoutine());
     }
 
     // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴
-    IEnumerator MoveBackRoutine()
+    IEnumerator BounceRoutine()
     {   
         animator.SetBool("onHurt", true);
 
-        yield return new WaitForSeconds(HURT_ANIMATION_DURATION);
+        yield return hurtAnimationDuration;
 
         animator.SetBool("onHurt", false);
         isHurt = false;

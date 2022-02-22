@@ -17,7 +17,7 @@ public class Background : MonoBehaviour
     private float halfViewPortYSize = 0.0f;
 
     // 배경 스프라이트를 이동시킬지 결정하는 범위를 정하는 변수
-    private float offset = 5.0f;
+    private float offset = 2.5f;
 
     private void Start()
     {

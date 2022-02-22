@@ -35,7 +35,7 @@ public class PlayerHP : MonoBehaviour
     private float blinkDelay = 0.1f;
 
     // HitColorAnimation 의 IEnumerator
-    IEnumerator blinkAnimationRoutine;
+    IEnumerator blinkEffectRoutine;
 
     private void Awake()
     { 
@@ -45,7 +45,7 @@ public class PlayerHP : MonoBehaviour
 
     private void Start()
     {
-        blinkAnimationRoutine = BlinkAnimationRoutine();
+        blinkEffectRoutine = BlinkEffectRoutine();
     }
 
     // damage 만큼 플레이어의 체력이 하락한다.
@@ -71,7 +71,7 @@ public class PlayerHP : MonoBehaviour
     }
 
     // 깜빡임 애니메이션을 구현하는 코루틴
-    private IEnumerator BlinkAnimationRoutine()
+    private IEnumerator BlinkEffectRoutine()
     {
         Color color = spriteRenderer.color;
 
@@ -93,12 +93,11 @@ public class PlayerHP : MonoBehaviour
     private IEnumerator HitRoutine()
     {
         isHit = true;
-        StartCoroutine(blinkAnimationRoutine);
+        StartCoroutine(blinkEffectRoutine);
 
         yield return new WaitForSeconds(hitDelay);
 
         isHit = false;
-        StopCoroutine(blinkAnimationRoutine);
+        StopCoroutine(blinkEffectRoutine);
     }
-
 }

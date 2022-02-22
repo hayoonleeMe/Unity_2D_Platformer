@@ -1,26 +1,20 @@
 using System.Collections;
 using UnityEngine;
+
 public class Spike : MonoBehaviour
 {
     // 플레이어에게 입히는 스파이크 데미지
     [SerializeField]
-    private float damage = 1.0f;
+    private float damage;
 
     // 스파이크가 플레이어를 밀어내는 힘
     [SerializeField]
-    private float movebackPower;
+    private float bouncePower;
 
     // 스파이크에 부딪힌 플레이어 오브젝트
     private GameObject playerObject = null;
 
-    private void Start()
-    {
-
-
-        //StartCoroutine(HitCheckRoutine());
-    }
-
-    private void Update()
+    private void FixedUpdate()
     {
         // 플레이어가 스파이크에 닿아 playerObject 를 받아오고,
         // 플레이어가 피격 당한 상태가 아닐 때
@@ -28,15 +22,7 @@ public class Spike : MonoBehaviour
         {
             // 플레이어에게 데미지를 입히고 뒤로 밀리게 한다.
             playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
-            playerObject.GetComponent<PlayerController>().MoveBack(movebackPower);
-        }
-    }
-
-    IEnumerator HitCheckRoutine()
-    {
-        while (true)
-        {
-
+            playerObject.GetComponent<PlayerController>().Bounce(bouncePower);
         }
     }
 
