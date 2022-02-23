@@ -5,6 +5,7 @@ public class PlayerHP : MonoBehaviour
 {
     // 플레이어 오브젝트의 스프라이트 렌더러
     private SpriteRenderer spriteRenderer;
+    private PlayerController playerController;
 
     // 캔버스
     [SerializeField]
@@ -17,11 +18,7 @@ public class PlayerHP : MonoBehaviour
 
     // 플레이어의 현재 체력과 프로퍼티
     private float currentHP;
-    public float CurrentHP
-    {
-        set => currentHP = Mathf.Clamp(value, 0, maxHP);
-        get => currentHP;
-    }
+    public float CurrentHP => currentHP;
 
     // 플레이어가 데미지를 입은 상태인지를 나타내는 상태변수와 프로퍼티
     private bool isHit = false;
@@ -40,6 +37,8 @@ public class PlayerHP : MonoBehaviour
     private void Awake()
     { 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerController = GetComponent<PlayerController>();
+
         currentHP = maxHP;
     }
 
@@ -48,10 +47,16 @@ public class PlayerHP : MonoBehaviour
         blinkEffectRoutine = BlinkEffectRoutine();
     }
 
+    // 플레이어를 초기화 시킨다.
+    private void InitializeHP()
+    {
+        currentHP = maxHP;
+    }
+
     // damage 만큼 플레이어의 체력이 하락한다.
     public void TakeDamage(float damage)
     {
-        manageHeart.ApplyHeart(damage);
+        manageHeart.ApplyDamageToHeart(damage);
         currentHP -= damage;
 
         if (currentHP <= 0)
@@ -68,6 +73,11 @@ public class PlayerHP : MonoBehaviour
     private void OnDie()
     {
         Debug.Log("Player is Die");
+
+        // 플레이어를 초기화시킨다.
+        playerController.InitializeControl();
+        InitializeHP();
+        manageHeart.InitializeHeart();
     }
 
     // 깜빡임 애니메이션을 구현하는 코루틴

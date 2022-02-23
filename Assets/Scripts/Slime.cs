@@ -1,19 +1,36 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Slime : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Movement2D movement2D;
+    private SpriteRenderer spriteRenderer;
+
+    private void Awake()
     {
-        
+        movement2D = GetComponent<Movement2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        StartCoroutine(SlimeMoveRoutine());
+    }
+
+    private IEnumerator SlimeMoveRoutine()
+    {
+        while (true)
+        {
+            movement2D.MoveTo(Vector2.left);
+            spriteRenderer.flipX = false;
+
+            yield return new WaitForSeconds(2.0f);
+
+            movement2D.MoveTo(Vector2.right);
+            spriteRenderer.flipX = true;
+
+            yield return new WaitForSeconds(2.0f);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

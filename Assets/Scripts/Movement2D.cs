@@ -9,7 +9,7 @@ public class Movement2D : MonoBehaviour
     private float moveSpeed;
 
     // 이동 방향
-    private Vector3 moveDirection = Vector2.zero;
+    private Vector2 moveDirection = Vector2.zero;
 
     private void Awake()
     {
@@ -24,7 +24,7 @@ public class Movement2D : MonoBehaviour
     }
 
     // 오브젝트의 이동방향을 정하는 메소드
-    public void MoveTo(Vector3 direction)
+    public void MoveTo(Vector2 direction)
     {
         moveDirection = direction;
     }

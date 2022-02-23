@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private StageData stageData;
 
+    // 플레이어의 초기 위치
+    private Vector2 initialPos = new Vector2(0.0f, -0.3f);
+
     // 점프에 가해지는 운동량
     private float jumpAmount = 15.0f;
 
@@ -75,7 +78,7 @@ public class PlayerController : MonoBehaviour
         else if (x > 0) spriteRenderer.flipX = false;
 
         // 플레이어를 이동시킨다.
-        movement2D.MoveTo(new Vector3(x, 0.0f, 0.0f));
+        movement2D.MoveTo(new Vector2(x, 0.0f));
 
         // 걷기 애니메이션을 실행한다.
         // 점프 중에는 점프 애니메이션만 실행한다.
@@ -128,6 +131,12 @@ public class PlayerController : MonoBehaviour
         // 플레이어의 이동반경을 제한한다.
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x + spriteRenderer.bounds.size.x / 2, stageData.LimitMax.x - spriteRenderer.bounds.size.x / 2),
                                          Mathf.Clamp(transform.position.y, stageData.LimitMin.y + spriteRenderer.bounds.size.y / 2, stageData.LimitMax.y - spriteRenderer.bounds.size.y / 2));
+    }
+
+    // 플레이어를 초기화 시킨다.
+    public void InitializeControl()
+    {
+        transform.position = initialPos;
     }
 
     // 스페이스바를 키다운할 때 호출되는 함수
