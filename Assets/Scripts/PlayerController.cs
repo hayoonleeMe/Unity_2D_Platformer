@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using Environment;
 
 public class PlayerController : MonoBehaviour
 {
@@ -162,7 +163,7 @@ public class PlayerController : MonoBehaviour
         while (true)
         {
             // 플레이어가 지면을 밟고 있을 때
-            if (rigidBody2D.velocity.y == 0.0f)
+            if (Mathf.Approximately(rigidBody2D.velocity.y, 0.0f))
             {
                 isJump = false;
                 animator.SetBool("onFall", false);
@@ -186,14 +187,16 @@ public class PlayerController : MonoBehaviour
     }
 
     // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.
-    public void Bounce(float power)
+    public void Bounce(float power, BounceMode mode = BounceMode.Normal)
     {
-        isHurt = true;
-
         rigidBody2D.velocity = Vector2.zero;
         rigidBody2D.AddForce(new Vector2(0.0f, power), ForceMode2D.Impulse);
 
-        StartCoroutine(BounceRoutine());
+        if (mode == BounceMode.Damage)
+        {
+            isHurt = true;
+            StartCoroutine(BounceRoutine());
+        }
     }
 
     // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴

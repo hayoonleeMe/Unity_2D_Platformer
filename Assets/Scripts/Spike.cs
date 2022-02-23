@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using Environment;
 
 public class Spike : MonoBehaviour
 {
@@ -22,7 +22,7 @@ public class Spike : MonoBehaviour
         {
             // 플레이어에게 데미지를 입히고 뒤로 밀리게 한다.
             playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
-            playerObject.GetComponent<PlayerController>().Bounce(bouncePower);
+            playerObject.GetComponent<PlayerController>().Bounce(bouncePower, BounceMode.Damage);
         }
     }
 

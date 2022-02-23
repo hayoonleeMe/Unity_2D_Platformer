@@ -278,7 +278,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 10
   m_Sprite: {fileID: 21300000, guid: 21979c87bb867e14998d15a309179de8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -526,7 +526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1100225311
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1004,9 +1004,9 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.5, y: 0.28}
+  m_Size: {x: 0.97, y: 0.55}
   m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
+  m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
@@ -1018,8 +1018,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1665623198}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.93, y: -0.6, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 6.93, y: -0.169, z: 0}
+  m_LocalScale: {x: 1.455, y: 1.4732143, z: 1.5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
@@ -1042,19 +1042,19 @@ PolygonCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 0.56}
-    newSize: {x: 0.5, y: 0.28}
+    newSize: {x: 0.97, y: 0.55}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
-    adaptiveTiling: 0
+    adaptiveTiling: 1
   m_AutoTiling: 0
   m_Points:
     m_Paths:
     - - {x: -0.38220823, y: 0.16439077}
-      - {x: -0.48686498, y: 0.015464559}
-      - {x: -0.5, y: -0.28}
-      - {x: 0.5, y: -0.28}
-      - {x: 0.23782158, y: 0.16293511}
-      - {x: 0.23481297, y: 0.16930625}
+      - {x: -0.5011954, y: -0.00045756996}
+      - {x: -0.48746097, y: -0.28000003}
+      - {x: 0.42297557, y: -0.28}
+      - {x: 0.42431837, y: 0.09666169}
+      - {x: 0.24856925, y: 0.16647336}
       - {x: 0.06676623, y: 0.26323718}
       - {x: -0.20162207, y: 0.27497116}
 --- !u!95 &1665623202
@@ -1095,7 +1095,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &1665623204
 MonoBehaviour:
@@ -1109,6 +1109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66cf5b049f3dee146b2c7b7778774e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  slimeDead: {fileID: 21300000, guid: 3fc02feb56775564595301746d18bf83, type: 3}
+  damage: 0
+  bouncePower: 15
 --- !u!114 &1665623205
 MonoBehaviour:
   m_ObjectHideFlags: 0
