@@ -22,15 +22,19 @@ public class Slime : MonoBehaviour
     [SerializeField]
     private float bouncePower;
 
+    // 슬라임의 다음 방향
+    private Vector2 nextDir = Vector2.zero;
+
     // SlimeMoveRoutine 코루틴의 반환값 IEnumerator
     private IEnumerator slimeMoveRoutine;
 
     // SizeDownEffect 를 진행할 시간
     private const float SIZE_DOWN_EFFECT_DURATION = 1.0f;
 
-    // 슬라임이 이동하는 시간
-    private const float MOVE_TIME = 2.0f;
+    // 슬라임이 이동 방향을 바꾸는 딜레이
+    private const float DIR_CHANGE_DELAY = 2.0f;
 
+    // 슬라임 사망 시 회전할 때의 속도
     private const float ROTATE_SPEED = 250.0f;
 
     // 슬라임이 밟혔을 때 진행하던 방향
@@ -52,20 +56,48 @@ public class Slime : MonoBehaviour
         StartCoroutine(slimeMoveRoutine);
     }
 
-    // 슬라임을 좌, 우로 각각 MOVE_TIME 동안 이동시키는 코루틴
+    private void FixedUpdate()
+    {
+        // 레이캐스트로 슬라임의 앞에 Ground 타일이 있는지 체크한다.
+        Vector2 rayPos = rigidBody2D.position + nextDir;
+
+        Debug.DrawRay(rayPos, Vector3.down, Color.red);
+        RaycastHit2D rayHit = Physics2D.Raycast(rayPos, Vector3.down, 1.0f, LayerMask.GetMask("Ground"));
+
+        // Ground 타일이 없으면 슬라임의 이동방향을 반대로 바꾼다.
+        if (rayHit.collider == null)
+        {
+            nextDir *= -1;
+            movement2D.MoveTo(nextDir);
+            spriteRenderer.flipX = !spriteRenderer.flipX;
+        }
+    }
+
+    // 슬라임을 랜덤으로 왼쪽으로 이동, 오른쪽으로 이동, 제자리에 그대로 중 하나의 이동을 수행하도록 하는 코루틴
     private IEnumerator SlimeMoveRoutine()
     {
         while (true)
         {
-            movement2D.MoveTo(Vector2.left);
-            spriteRenderer.flipX = false;
+            ChangeNextDir();
 
-            yield return new WaitForSeconds(MOVE_TIME);
+            yield return new WaitForSeconds(DIR_CHANGE_DELAY);
+        }
+    }
 
-            movement2D.MoveTo(Vector2.right);
+    // 슬라임의 다음 이동 방향을 정한다.
+    private void ChangeNextDir()
+    {
+        nextDir.x = Random.Range(-1, 2);
+
+        movement2D.MoveTo(nextDir);
+
+        if (nextDir.x > 0)
+        {
             spriteRenderer.flipX = true;
-
-            yield return new WaitForSeconds(MOVE_TIME);
+        }
+        else if (nextDir.x < 0)
+        {
+            spriteRenderer.flipX = false;
         }
     }
 
