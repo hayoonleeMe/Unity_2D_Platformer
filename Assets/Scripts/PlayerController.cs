@@ -40,16 +40,28 @@ public class PlayerController : MonoBehaviour
     // 스페이스바를 누르고 있는지를 나타내는 상태변수
     private bool isSpaceDown = false;
 
-    // 플레이어가 점프 중인지를 나타내는 상태변수와 프로퍼티
+    // 플레이어가 점프 중인지를 나타내는 상태변수
     private bool isJump = false;
     
     // 플레이어가 피격되었는지를 나타내는 상태변수와 프로퍼티
     private bool isHurt = false;
     public bool IsHurt => isHurt;
 
+    // 플레이어가 적을 밟아서 공격할 때의 y좌표의 프로퍼티
+    public float AttackSpotY
+    {
+        get
+        {
+            return transform.position.y - spriteRenderer.bounds.size.y / 2;
+        }
+    }
+
     // 피격 애니메이션 재생시간
     private const float HURT_ANIMATION_DURATION = 0.3f;
 
+    /// <summary>
+    /// 객체를 미리 만들어 두는 게 퍼포먼스에 관련있는지 확인 필요
+    /// </summary>
     // 피격 애니메이션 재생시간을 나타내는 WaitForSeconds 객체
     private WaitForSeconds hurtAnimationDuration;
 
@@ -200,7 +212,7 @@ public class PlayerController : MonoBehaviour
     }
 
     // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴
-    IEnumerator BounceRoutine()
+    private IEnumerator BounceRoutine()
     {   
         animator.SetBool("onHurt", true);
 

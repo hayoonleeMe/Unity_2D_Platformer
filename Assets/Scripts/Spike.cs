@@ -28,7 +28,7 @@ public class Spike : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && collision.friction != 0)
+        if (collision.gameObject.CompareTag("Player"))
         {
             playerObject = collision.gameObject;
         }
@@ -36,7 +36,7 @@ public class Spike : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Player") && collision.friction != 0)
+        if (collision.gameObject.CompareTag("Player"))
         {
             playerObject = null;
         }

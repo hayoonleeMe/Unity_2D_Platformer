@@ -30,6 +30,12 @@ public class Background : MonoBehaviour
         StartCoroutine(CheckAlign());
     }
 
+
+    /// <summary>
+    /// 배경 스프라이트를 옮길때 localScale 대신 SpriteRenderer 의 bounds.size 멤버를 사용하도록 수정
+    /// </summary>
+    /// <returns></returns>
+
     // 배경 스프라이트가 이동해야 하는지 CHECK_SECONDS 마다 체크하는 코루틴 함수
     IEnumerator CheckAlign()
     {
