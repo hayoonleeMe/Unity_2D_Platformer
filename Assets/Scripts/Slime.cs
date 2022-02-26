@@ -46,8 +46,14 @@ public class Slime : MonoBehaviour
     // 슬라임이 밟혔을 때 진행하던 방향
     private bool deadFlipX;
 
-    // 슬라임이 타격 당하는 지점의 y좌표
-    private float hitSpotY = 0.0f;
+    // 슬라임이 타격 당하는 지점의 y좌표를 반환하는 프로퍼티
+    public float HitSpotY => transform.position.y + polygonCollider2D.points[1].y * transform.localScale.y;
+
+    // 슬라임이 타격 당하는 지점의 최소 x좌표를 반환하는 프로퍼티
+    public float HitSpotMinX => transform.position.x + polygonCollider2D.points[0].x * transform.localScale.x;
+    
+    // 슬라임이 타격 당하는 지점의 최대 x좌표를 반환하는 프로퍼티
+    public float HitSpotMaxX => transform.position.x + polygonCollider2D.points[4].x * transform.localScale.x;
 
     private void Awake()
     {
@@ -56,8 +62,6 @@ public class Slime : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         polygonCollider2D = GetComponent<PolygonCollider2D>();
         animator = GetComponent<Animator>();
-
-        hitSpotY = transform.position.y + spriteRenderer.bounds.size.y / 4;
     }
 
     private void Start()
@@ -87,7 +91,7 @@ public class Slime : MonoBehaviour
         if (playerObject != null)
         {
             // 슬라임의 옆에 플레이어가 부딪히면 플레이어에게 데미지를 입힌다.
-            if (playerObject.GetComponent<PlayerController>().AttackSpotY < hitSpotY && playerObject.GetComponent<PlayerHP>().IsHit == false)
+            if (!CanPlayerAttackSlime() && playerObject.GetComponent<PlayerHP>().IsHit == false)
             {
                 // 플레이어게 데미지를 입힌다.
                 playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
@@ -95,7 +99,7 @@ public class Slime : MonoBehaviour
                 playerObject.GetComponent<PlayerController>().Bounce(damageBouncePower, BounceMode.Damage);
             }
             // 슬라임의 위를 플레이어가 밟으면 슬라임은 죽는다.
-            else if (playerObject.GetComponent<PlayerController>().AttackSpotY >= hitSpotY)
+            else if (CanPlayerAttackSlime())
             {
                 // 플레이어를 튀어오르게 한다.
                 playerObject.GetComponent<PlayerController>().Bounce(normalBouncePower);
@@ -104,6 +108,21 @@ public class Slime : MonoBehaviour
                 OnDie();
             }
         }
+    }
+
+    // 플레이어가 슬라임을 공격할 수 있는지를 반환한다.
+    private bool CanPlayerAttackSlime()
+    {
+        // 플레이어의 타격 지점이 슬라임의 피격 지점보다 위에 있고,
+        // pivot 이 정중앙인 플레이어의 position 이 슬라임의 피격 지점 내부에 있다면 플레이어는 슬라임을 공격할 수 있다.
+        if (playerObject.GetComponent<PlayerController>().AttackSpotY >= HitSpotY &&
+           ((playerObject.GetComponent<PlayerController>().AttackSpotMinX >= HitSpotMinX && playerObject.GetComponent<PlayerController>().AttackSpotMinX <= HitSpotMaxX) ||
+           (playerObject.GetComponent<PlayerController>().AttackSpotMaxX >= HitSpotMinX && playerObject.GetComponent<PlayerController>().AttackSpotMaxX <= HitSpotMaxX)))
+        {
+            return true;
+        }
+
+        return false;
     }
 
     // 슬라임을 랜덤으로 왼쪽으로 이동, 오른쪽으로 이동, 제자리에 그대로 중 하나의 이동을 수행하도록 하는 코루틴

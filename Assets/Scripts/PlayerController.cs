@@ -47,14 +47,14 @@ public class PlayerController : MonoBehaviour
     private bool isHurt = false;
     public bool IsHurt => isHurt;
 
-    // 플레이어가 적을 밟아서 공격할 때의 y좌표의 프로퍼티
-    public float AttackSpotY
-    {
-        get
-        {
-            return transform.position.y - spriteRenderer.bounds.size.y / 2;
-        }
-    }
+    // 플레이어가 적을 밟아서 공격할 때의 y좌표를 반환하는 프로퍼티
+    public float AttackSpotY => transform.position.y - spriteRenderer.bounds.size.y / 2;
+
+    // 플레이어가 적을 밟아서 공격할 때의 최소 x좌표를 반환하는 프로퍼티
+    public float AttackSpotMinX => transform.position.x - spriteRenderer.bounds.size.x / 2;
+
+    // 플레이어가 적을 밟아서 공격할 때의 최대 x좌표를 반환하는 프로퍼티
+    public float AttackSpotMaxX => transform.position.x + spriteRenderer.bounds.size.x / 2;
 
     // 피격 애니메이션 재생시간
     private const float HURT_ANIMATION_DURATION = 0.3f;
