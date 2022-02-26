@@ -18,9 +18,15 @@ public class Slime : MonoBehaviour
     [SerializeField]
     private float damage;
 
-    // 슬라임이 플레이어를 밀어내는 힘
+    // BounceMode.Damage 타입의 Bounce 메소드에 적용되는 슬라임이 플레이어를 밀어내는 힘
     [SerializeField]
-    private float bouncePower;
+    private float damageBouncePower;
+
+    // BounceMode.Normal 타입의 Bounce 메소드에 적용되는 슬라임이 플레이어를 밀어내는 힘
+    [SerializeField]
+    private float normalBouncePower;
+
+    private GameObject playerObject = null;
 
     // 슬라임의 다음 방향
     private Vector2 nextDir = Vector2.zero;
@@ -51,7 +57,7 @@ public class Slime : MonoBehaviour
         polygonCollider2D = GetComponent<PolygonCollider2D>();
         animator = GetComponent<Animator>();
 
-        hitSpotY = transform.position.y + spriteRenderer.bounds.size.y / 6;
+        hitSpotY = transform.position.y + spriteRenderer.bounds.size.y / 4;
     }
 
     private void Start()
@@ -75,6 +81,28 @@ public class Slime : MonoBehaviour
             nextDir *= -1;
             movement2D.MoveTo(nextDir);
             spriteRenderer.flipX = !spriteRenderer.flipX;
+        }
+
+        // 슬라임과의 충돌에 대한 처리를 한다.
+        if (playerObject != null)
+        {
+            // 슬라임의 옆에 플레이어가 부딪히면 플레이어에게 데미지를 입힌다.
+            if (playerObject.GetComponent<PlayerController>().AttackSpotY < hitSpotY && playerObject.GetComponent<PlayerHP>().IsHit == false)
+            {
+                // 플레이어게 데미지를 입힌다.
+                playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
+                // 플레이어를 튀어오르게 한다.
+                playerObject.GetComponent<PlayerController>().Bounce(damageBouncePower, BounceMode.Damage);
+            }
+            // 슬라임의 위를 플레이어가 밟으면 슬라임은 죽는다.
+            else if (playerObject.GetComponent<PlayerController>().AttackSpotY >= hitSpotY)
+            {
+                // 플레이어를 튀어오르게 한다.
+                playerObject.GetComponent<PlayerController>().Bounce(normalBouncePower);
+
+                // 슬라임은 소멸한다.
+                OnDie();
+            }
         }
     }
 
@@ -108,25 +136,17 @@ public class Slime : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
-        // 슬라임의 옆에 플레이어가 부딪히면 플레이어에게 데미지를 입힌다.
-        if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<PlayerController>().AttackSpotY < hitSpotY)
+        if (collision.gameObject.CompareTag("Player"))
         {
-            if (collision.gameObject.GetComponent<PlayerHP>().IsHit == false)
-            {
-                collision.gameObject.GetComponent<PlayerHP>().TakeDamage(damage);
-                collision.gameObject.GetComponent<PlayerController>().Bounce(bouncePower, BounceMode.Damage);
-            }
+            playerObject = collision.gameObject;
         }
-        // 슬라임의 위를 플레이어가 밟으면 슬라임은 죽는다.
-        else if (collision.gameObject.CompareTag("Player") && collision.gameObject.GetComponent<PlayerController>().AttackSpotY >= hitSpotY) 
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            if (collision.gameObject.GetComponent<PlayerHP>().IsHit == false)
-            {
-                // 플레이어를 튀어오르게 한다.
-                collision.gameObject.GetComponent<PlayerController>().Bounce(15.0f);
-                OnDie();
-            }
+            playerObject = null;
         }
     }
 
@@ -175,7 +195,5 @@ public class Slime : MonoBehaviour
         movement2D.MoveTo(Vector2.zero);
         rigidBody2D.velocity = Vector2.zero;
         rigidBody2D.AddForce(Vector2.up * 5.0f, ForceMode2D.Impulse);
-
-        
     }
 }

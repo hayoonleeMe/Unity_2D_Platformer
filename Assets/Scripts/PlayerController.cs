@@ -211,6 +211,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.
+    public void Bounce(Vector2 powerDir, BounceMode mode = BounceMode.Normal)
+    {
+        rigidBody2D.velocity = Vector2.zero;
+        rigidBody2D.AddForce(powerDir, ForceMode2D.Impulse);
+
+        if (mode == BounceMode.Damage)
+        {
+            isHurt = true;
+            StartCoroutine(BounceRoutine());
+        }
+    }
+
     // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴
     private IEnumerator BounceRoutine()
     {   
