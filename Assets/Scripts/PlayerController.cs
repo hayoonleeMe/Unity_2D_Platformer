@@ -13,8 +13,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private StageData stageData;
 
+    // 플레이어 오브젝트의 접촉을 필터링한다.
+    [SerializeField]
+    private ContactFilter2D tilemapFilter;
+
     // 플레이어의 초기 위치
-    private Vector2 initialPos = new Vector2(0.0f, -0.3f);
+    private Vector2 initialPos = new Vector2(0.0f, -0.3f); 
 
     // 점프에 가해지는 운동량
     private float jumpAmount = 15.0f;
@@ -28,9 +32,6 @@ public class PlayerController : MonoBehaviour
     // 최소 점프 운동량
     private const float MIN_JUMP_AMOUNT = 15.0f;
 
-    // 플레이어의 상태를 체크하는 시간
-    private const float CHECK_SECONDS = 0.07f;
-
     // 오브젝트에만 적용하는 오브젝트가 올라갈때의 중력 값
     private const float RISING_GRAVITY_SCALE = 7.0f;
 
@@ -40,9 +41,12 @@ public class PlayerController : MonoBehaviour
     // 스페이스바를 누르고 있는지를 나타내는 상태변수
     private bool isSpaceDown = false;
 
-    // 플레이어가 점프 중인지를 나타내는 상태변수
+    // 플레이어가 점프 중인지 나타내는 상태변수
     private bool isJump = false;
-    
+
+    // 플레이어가 땅 위에 있는지를 반환하는 프로퍼티
+    public bool IsGrounded => rigidBody2D.IsTouching(tilemapFilter);
+
     // 플레이어가 피격되었는지를 나타내는 상태변수와 프로퍼티
     private bool isHurt = false;
     public bool IsHurt => isHurt;
@@ -73,12 +77,6 @@ public class PlayerController : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
 
         hurtAnimationDuration = new WaitForSeconds(HURT_ANIMATION_DURATION);
-    }
-
-    private void Start()
-    {
-        // 플레이어가 공중에 있는지 체크하는 코루틴을 실행한다.
-        StartCoroutine(CheckPlayerIsAir());
     }
 
     private void Update()
@@ -146,6 +144,31 @@ public class PlayerController : MonoBehaviour
                                          Mathf.Clamp(transform.position.y, stageData.LimitMin.y + spriteRenderer.bounds.size.y / 2, stageData.LimitMax.y - spriteRenderer.bounds.size.y / 2));
     }
 
+    private void FixedUpdate()
+    {
+        // 플레이어가 땅 위에 있는지, 공중에 있는지 체크한다.
+
+        // 플레이어가 땅 위에 있을 때
+        if (IsGrounded)
+        {
+            isJump = false;
+            animator.SetBool("onFall", isJump);
+            rigidBody2D.gravityScale = 1.0f;
+        }
+        // 플레이어가 공중에 있을 때
+        else
+        {
+            // 공중에서 걷는 애니메이션이 실행중이라면 중단한다.
+            if (animator.GetBool("onWalk"))
+            {
+                animator.SetBool("onWalk", false);
+            }
+
+            isJump = true;
+            animator.SetBool("onFall", isJump);
+        }
+    }
+
     // 플레이어를 초기화 시킨다.
     public void InitializeControl()
     {
@@ -167,35 +190,6 @@ public class PlayerController : MonoBehaviour
     {
         // 운동량을 더해 점프시킨다.
         rigidBody2D.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
-    }
-
-    // 플레이어가 공중에 있는지 CHECK_SECONDS 초마다 체크하는 코루틴
-    private IEnumerator CheckPlayerIsAir()
-    {
-        while (true)
-        {
-            // 플레이어가 지면을 밟고 있을 때
-            if (Mathf.Approximately(rigidBody2D.velocity.y, 0.0f))
-            {
-                isJump = false;
-                animator.SetBool("onFall", false);
-                rigidBody2D.gravityScale = 1.0f;
-            }
-            // 플레이어가 공중에 있을 때
-            else
-            {
-                // 공중에서 걷는 애니메이션이 실행중이라면 중단한다.
-                if (animator.GetBool("onWalk"))
-                {
-                    animator.SetBool("onWalk", false);
-                }
-
-                isJump = true;
-                animator.SetBool("onFall", true);
-            }
-
-            yield return new WaitForSeconds(CHECK_SECONDS);
-        }
     }
 
     // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.

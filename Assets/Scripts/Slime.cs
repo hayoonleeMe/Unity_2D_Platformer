@@ -74,10 +74,9 @@ public class Slime : MonoBehaviour
     private void FixedUpdate()
     {
         // 레이캐스트로 슬라임의 앞에 Ground 타일이 있는지 체크한다.
-        Vector2 rayPos = rigidBody2D.position + nextDir;
 
-        Debug.DrawRay(rayPos, Vector3.down, Color.red);
-        RaycastHit2D rayHit = Physics2D.Raycast(rayPos, Vector3.down, 1.0f, LayerMask.GetMask("Ground"));
+        Debug.DrawRay(rigidBody2D.position + nextDir, Vector3.down, Color.red);
+        RaycastHit2D rayHit = Physics2D.Raycast(rigidBody2D.position + nextDir, Vector3.down, 1.0f, LayerMask.GetMask("Ground"));
 
         // Ground 타일이 없으면 슬라임의 이동방향을 반대로 바꾼다.
         if (rayHit.collider == null)

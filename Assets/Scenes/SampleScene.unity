@@ -287,6 +287,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stageData: {fileID: 11400000, guid: c5a98ad9c83039d4d88b469d2162ae23, type: 2}
+  tilemapFilter:
+    useTriggers: 0
+    useLayerMask: 0
+    useDepth: 0
+    useOutsideDepth: 0
+    useNormalAngle: 1
+    useOutsideNormalAngle: 0
+    layerMask:
+      serializedVersion: 2
+      m_Bits: 256
+    minDepth: 0
+    maxDepth: 0
+    minNormalAngle: 45
+    maxNormalAngle: 135
 --- !u!114 &467330927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,6 +846,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Slime
       objectReference: {fileID: 0}
+    - target: {fileID: 5294611261694892330, guid: 05bd9ae2492014941a8217def69dc08f, type: 3}
+      propertyPath: m_AutoTiling
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5294611261694892331, guid: 05bd9ae2492014941a8217def69dc08f, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -1194,9 +1212,9 @@ GameObject:
   - component: {fileID: 1725797184}
   - component: {fileID: 1725797186}
   - component: {fileID: 1725797185}
-  - component: {fileID: 1725797187}
   - component: {fileID: 1725797189}
   - component: {fileID: 1725797188}
+  - component: {fileID: 1725797187}
   m_Layer: 8
   m_Name: Grounds
   m_TagString: Untagged
@@ -2805,7 +2823,7 @@ TilemapCollider2D:
   m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
-  m_ExtrusionFactor: 0
+  m_ExtrusionFactor: 0.00001
 --- !u!66 &1725797188
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -2860,6 +2878,18 @@ CompositeCollider2D:
         Y: 0
       - X: 80000000
         Y: -10000000
+      - X: 60000100
+        Y: -10000000
+      - X: 60000100
+        Y: -10000041
+      - X: 60000041
+        Y: -10000100
+      - X: 49999959
+        Y: -10000100
+      - X: 49999900
+        Y: -10000041
+      - X: 49999900
+        Y: -10000000
       - X: -50000000
         Y: -10000000
       - X: -50000000
@@ -2868,28 +2898,28 @@ CompositeCollider2D:
         Y: -50000000
   m_CompositePaths:
     m_Paths:
-    - - {x: 15.528571, y: 2.0857143}
-      - {x: 15.900001, y: 2.3428571}
-      - {x: 16, y: 2.6000001}
-      - {x: 16, y: 3}
-      - {x: 11, y: 3}
-      - {x: 11, y: 2.5714285}
-      - {x: 11.171429, y: 2.2714286}
-      - {x: 11.5, y: 2.0857143}
-      - {x: 12, y: 2}
-      - {x: 15, y: 2}
-    - - {x: 31, y: -1}
-      - {x: 17, y: -1}
-      - {x: 17, y: -2}
-      - {x: 10, y: -2}
-      - {x: 10, y: 0}
-      - {x: 8, y: 0}
-      - {x: 8, y: -1}
-      - {x: -5, y: -1}
-      - {x: -5, y: -5}
-      - {x: 31, y: -5}
+    - - {x: 14.999999, y: 2}
+      - {x: 15.528576, y: 2.0857177}
+      - {x: 15.900003, y: 2.3428645}
+      - {x: 16, y: 2.600005}
+      - {x: 15.999971, y: 3}
+      - {x: 11, y: 2.999971}
+      - {x: 11.000003, y: 2.5714228}
+      - {x: 11.171434, y: 2.2714252}
+      - {x: 11.500005, y: 2.0857136}
+      - {x: 12.000003, y: 2}
+    - - {x: 30.999971, y: -5}
+      - {x: 30.999971, y: -1}
+      - {x: 17, y: -1.0000293}
+      - {x: 16.999971, y: -2}
+      - {x: 10, y: -1.9999707}
+      - {x: 9.99997, y: 0}
+      - {x: 8, y: -0.000029300001}
+      - {x: 7.9999704, y: -1}
+      - {x: -5, y: -1.0000293}
+      - {x: -4.999971, y: -5}
   m_VertexDistance: 0.0005
-  m_OffsetDistance: 0
+  m_OffsetDistance: 0.00005
 --- !u!50 &1725797189
 Rigidbody2D:
   serializedVersion: 4
