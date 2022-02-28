@@ -14,7 +14,6 @@ public class PlayerController : MonoBehaviour
     private StageData stageData;
 
     // 플레이어 오브젝트의 접촉을 필터링한다.
-    [SerializeField]
     private ContactFilter2D tilemapFilter;
 
     // 플레이어의 초기 위치
@@ -65,6 +64,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// 객체를 미리 만들어 두는 게 퍼포먼스에 관련있는지 확인 필요
+    /// -> 코루틴 최적화 필요
     /// </summary>
     // 피격 애니메이션 재생시간을 나타내는 WaitForSeconds 객체
     private WaitForSeconds hurtAnimationDuration;
@@ -77,6 +77,9 @@ public class PlayerController : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
 
         hurtAnimationDuration = new WaitForSeconds(HURT_ANIMATION_DURATION);
+
+        tilemapFilter.SetLayerMask(LayerMask.GetMask("Ground"));
+        tilemapFilter.SetNormalAngle(45.0f, 135.0f);
     }
 
     private void Update()
