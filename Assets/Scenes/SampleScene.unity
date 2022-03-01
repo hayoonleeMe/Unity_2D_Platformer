@@ -244,10 +244,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5294611261694892335, guid: 05bd9ae2492014941a8217def69dc08f, type: 3}
-      propertyPath: damage
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05bd9ae2492014941a8217def69dc08f, type: 3}
 --- !u!1 &467330925
@@ -423,7 +419,7 @@ PlatformEffector2D:
   m_SurfaceArc: 180
   m_UseSideFriction: 0
   m_UseSideBounce: 0
-  m_SideArc: 1
+  m_SideArc: 90
 --- !u!70 &467330933
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -872,10 +868,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5294611261694892331, guid: 05bd9ae2492014941a8217def69dc08f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5294611261694892335, guid: 05bd9ae2492014941a8217def69dc08f, type: 3}
-      propertyPath: damage
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
