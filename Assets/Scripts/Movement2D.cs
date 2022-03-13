@@ -19,7 +19,6 @@ public class Movement2D : MonoBehaviour
     private void FixedUpdate()
     {
         // 이동방향으로 이동한다.
-        //transform.position += moveDirection * moveSpeed * Time.fixedDeltaTime;
         rigidBody2D.velocity = new Vector2(moveDirection.x * moveSpeed, rigidBody2D.velocity.y);
     }
 

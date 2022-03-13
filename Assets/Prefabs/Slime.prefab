@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 5294611261694892309}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -76,12 +76,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 6ffbc5ed740fd3b4f9db2f3c086869fa, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 39250cd1825e96142881b6c0aca3d9ed, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.97, y: 0.55}
+  m_Size: {x: 0.64, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1
@@ -104,21 +104,21 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1, y: 0.56}
-    newSize: {x: 0.97, y: 0.55}
+    oldSize: {x: 2, y: 1}
+    newSize: {x: 0.64, y: 0.32}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 1
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.38220823, y: 0.16439077}
-      - {x: -0.4937666, y: -0.00045756996}
-      - {x: -0.4986042, y: -0.2781428}
-      - {x: 0.40758017, y: -0.28185722}
-      - {x: 0.23928322, y: 0.1553301}
-      - {x: 0.055622965, y: 0.27252325}
-      - {x: -0.1867644, y: 0.27125677}
+    - - {x: -0.5242992, y: 0.24542463}
+      - {x: -0.7655104, y: -0.08921552}
+      - {x: -0.76375204, y: -0.4912777}
+      - {x: 0.5967833, y: -0.49310774}
+      - {x: 0.4365893, y: 0.089563124}
+      - {x: 0.13269803, y: 0.33810496}
+      - {x: -0.2862652, y: 0.35869834}
 --- !u!95 &5294611261694892329
 Animator:
   serializedVersion: 3
@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   slimeDead: {fileID: 21300000, guid: 3fc02feb56775564595301746d18bf83, type: 3}
-  damage: 1
+  damage: 0
   damageBouncePower: 20
   normalBouncePower: 15
 --- !u!114 &5294611261694892334

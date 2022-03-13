@@ -20,28 +20,29 @@ public class PlayerController : MonoBehaviour
     private Vector2 initialPos = new Vector2(0.0f, -0.3f); 
 
     // 점프에 가해지는 운동량
-    private float jumpAmount = 15.0f;
+    private float jumpAmount = 16f;
 
     // 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
     private float jumpOffset = 0.05f;
 
     // 최대 점프 운동량
-    private const float MAX_JUMP_AMOUNT = 22.0f;
+    private float MAX_JUMP_AMOUNT = 22.0f;
 
     // 최소 점프 운동량
-    private const float MIN_JUMP_AMOUNT = 15.0f;
+    private float MIN_JUMP_AMOUNT = 15.0f;
 
     // 오브젝트에만 적용하는 오브젝트가 올라갈때의 중력 값
-    private const float RISING_GRAVITY_SCALE = 7.0f;
+    private const float IN_AIR_GRAVITY_SCALE = 5.0f;
 
-    // 오브젝트에만 적용하는 오브젝트가 떨어질때의 중력 값
-    private const float FALLING_GRAVITY_SCALE = 17.0f;
+    public int jumpCount;
+
+    private int maxJumpCount = 2;
 
     // 스페이스바를 누르고 있는지를 나타내는 상태변수
     private bool isSpaceDown = false;
 
-    // 플레이어가 점프 중인지 나타내는 상태변수
-    private bool isJump = false;
+    // 플레이어가 공중에 있는지를 나타내는 상태변수
+    private bool isInAir = false;
 
     // 플레이어가 땅 위에 있는지를 반환하는 프로퍼티
     public bool IsGrounded => rigidBody2D.IsTouching(tilemapFilter);
@@ -71,7 +72,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        movement2D = GetComponent<Movement2D>();
+        movement2D = GetComponent<Movement2D>();                         
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rigidBody2D = GetComponent<Rigidbody2D>();
@@ -80,6 +81,8 @@ public class PlayerController : MonoBehaviour
 
         tilemapFilter.SetLayerMask(LayerMask.GetMask("Ground"));
         tilemapFilter.SetNormalAngle(45.0f, 135.0f);
+
+        jumpCount = maxJumpCount;
     }
 
     private void Update()
@@ -97,47 +100,14 @@ public class PlayerController : MonoBehaviour
         // 걷기 애니메이션을 실행한다.
         // 점프 중에는 점프 애니메이션만 실행한다.
         bool walk = (x != 0) ? true : false;
-        if (!isJump)
-        {
+        if (!isInAir)
+        { 
             animator.SetBool("onWalk", walk);
         }
 
-        // 스페이스바를 키다운중이 아닐때만 스페이스바를 누르는지 체크한다.
-        if (!isSpaceDown)
-        {
-            isSpaceDown = Input.GetKeyDown(KeyCode.Space);
-        }
-
-        // 점프중이 아니면서 스페이스바를 키다운 중이면 점프를 준비한다.
-        // 스페이스바를 키다운할수록 플레이어가 점프하는 높이가 커진다.
-        if (isSpaceDown && !isJump)
-        {
-            PrepareJump();
-        }
-
-        // 스페이스바를 떼면 정해진 점프 운동량만큼 플레이어가 점프한다.
-        bool spaceUp = Input.GetKeyUp(KeyCode.Space);
-        if (spaceUp && !isJump)
-        {
-            isSpaceDown = false;
-            Jump();
-            jumpAmount = MIN_JUMP_AMOUNT;
-        }
-
-        // 플레이어 오브젝트가 점프를 할 때 중력 값을 조절한다.
-        if (isJump)
-        {
-            // 위로 올라갈 때
-            if (rigidBody2D.velocity.y > 0)
-            {
-                rigidBody2D.gravityScale = RISING_GRAVITY_SCALE;
-            }
-            // 아래로 내려갈 때
-            else
-            {
-                rigidBody2D.gravityScale = FALLING_GRAVITY_SCALE;
-            }
-        }
+        //IntensityControlJump();
+        MultipleJump();
+        
     }
 
     private void LateUpdate()
@@ -150,13 +120,17 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         // 플레이어가 땅 위에 있는지, 공중에 있는지 체크한다.
-
         // 플레이어가 땅 위에 있을 때
         if (IsGrounded)
         {
-            isJump = false;
-            animator.SetBool("onFall", isJump);
+            isInAir = false;
+            animator.SetBool("onFall", isInAir);
             rigidBody2D.gravityScale = 1.0f;
+
+            if (!isSpaceDown && jumpCount != maxJumpCount)
+            {
+                jumpCount = maxJumpCount;
+            }
         }
         // 플레이어가 공중에 있을 때
         else
@@ -167,8 +141,14 @@ public class PlayerController : MonoBehaviour
                 animator.SetBool("onWalk", false);
             }
 
-            isJump = true;
-            animator.SetBool("onFall", isJump);
+            isInAir = true;
+            animator.SetBool("onFall", isInAir);
+        }
+
+        // 플레이어 오브젝트가 점프를 할 때 중력 값을 조절한다.
+        if (isInAir)
+        {
+            rigidBody2D.gravityScale = IN_AIR_GRAVITY_SCALE;
         }
     }
 
@@ -176,6 +156,63 @@ public class PlayerController : MonoBehaviour
     public void InitializeControl()
     {
         transform.position = initialPos;
+    }
+
+    // 플레이어 오브젝트를 점프시키는 메소드
+    private void Jump()
+    {
+        Vector2 vel = rigidBody2D.velocity;
+        vel.y = 0.0f;
+        rigidBody2D.velocity = vel;
+
+        // 운동량을 더해 점프시킨다.
+        rigidBody2D.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
+    }
+
+    // 플레이어를 여러번 점프시킨다.
+    private void MultipleJump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            isSpaceDown = true;
+
+            if (jumpCount > 0f)
+            {
+                Jump();
+                --jumpCount;
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            isSpaceDown = false;
+        }
+    }
+
+    // 스페이스바를 키다운해 점프의 세기를 조절한다.
+    private void IntensityControlJump()
+    {
+        // 스페이스바를 키다운중이 아닐때만 스페이스바를 누르는지 체크한다.
+        if (!isSpaceDown)
+        {
+            isSpaceDown = Input.GetKeyDown(KeyCode.Space);
+        }
+
+        // 점프중이 아니면서 스페이스바를 키다운 중이면 점프를 준비한다.
+        // 스페이스바를 키다운할수록 플레이어가 점프하는 높이가 커진다.
+        if (isSpaceDown && !isInAir)
+        {
+            PrepareJump();
+        }
+
+        // 스페이스바를 떼면 정해진 점프 운동량만큼 플레이어가 점프한다.
+        bool spaceUp = Input.GetKeyUp(KeyCode.Space);
+        if (spaceUp && !isInAir)
+        {
+            isSpaceDown = false;
+            Jump();
+            jumpAmount = MIN_JUMP_AMOUNT;
+        }
     }
 
     // 스페이스바를 키다운할 때 호출되는 함수
@@ -186,13 +223,6 @@ public class PlayerController : MonoBehaviour
         jumpAmount += jumpOffset;
         // 최대 점프 운동량을 넘지 않는다.
         jumpAmount = Mathf.Clamp(jumpAmount, MIN_JUMP_AMOUNT, MAX_JUMP_AMOUNT);
-    }
-
-    // 플레이어 오브젝트를 점프시키는 메소드
-    private void Jump()
-    {
-        // 운동량을 더해 점프시킨다.
-        rigidBody2D.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
     }
 
     // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.

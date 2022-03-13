@@ -83,7 +83,10 @@ public class Slime : MonoBehaviour
         {
             nextDir *= -1;
             movement2D.MoveTo(nextDir);
-            spriteRenderer.flipX = !spriteRenderer.flipX;
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+            //spriteRenderer.flipX = !spriteRenderer.flipX;
         }
 
         // 슬라임과의 충돌에 대한 처리를 한다.
@@ -142,13 +145,12 @@ public class Slime : MonoBehaviour
 
         movement2D.MoveTo(nextDir);
 
-        if (nextDir.x > 0)
+        // 반대 방향으로 갈 때
+        if (nextDir.x * transform.localScale.x > 0.0f)
         {
-            spriteRenderer.flipX = true;
-        }
-        else if (nextDir.x < 0)
-        {
-            spriteRenderer.flipX = false;
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
         }
     }
 
@@ -172,7 +174,7 @@ public class Slime : MonoBehaviour
     private void OnDie()
     {
         StopCoroutine(slimeMoveRoutine);
-        deadFlipX = spriteRenderer.flipX;
+        //deadFlipX = spriteRenderer.flipX;
 
         BounceOff();
 
@@ -186,12 +188,20 @@ public class Slime : MonoBehaviour
         animator.enabled = false;
 
         spriteRenderer.sprite = slimeDead;
-        spriteRenderer.flipX = deadFlipX;
 
         float elapsedTime = 0.0f;
         Vector2 originScale = transform.localScale;
 
-        float direction = deadFlipX ? -1.0f : 1.0f;
+        // 슬라임 스프라이트가 바라보고 있는 방향의 반대로 회전한다.
+        float direction;
+        if (transform.localScale.x > 0.0f)
+        {
+            direction = -1.0f;
+        }
+        else
+        {
+            direction = 1.0f;
+        }
 
         while (elapsedTime < SIZE_DOWN_EFFECT_DURATION)
         {
