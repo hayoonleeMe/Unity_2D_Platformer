@@ -3,32 +3,32 @@ using UnityEngine.UI;
 
 public class ManageHeart : MonoBehaviour
 {
-    // ÇÃ·¹ÀÌ¾îÀÇ playerHP ½ºÅ©¸³Æ® ÄÄÆ÷³ÍÆ®ÀÇ °´Ã¼
+    // í”Œë ˆì´ì–´ì˜ playerHP ìŠ¤í¬ë¦½íŠ¸ ì»´í¬ë„ŒíŠ¸ì˜ ê°ì²´
     [SerializeField]
     private PlayerHP playerHP;
 
-    // ÇÏÆ® ¿ÀºêÁ§Æ®ÀÇ ÇÁ¸®ÆÕ, ±âº» ½ºÇÁ¶óÀÌÆ®´Â Full ÀÌ´Ù.
+    // í•˜íŠ¸ ì˜¤ë¸Œì íŠ¸ì˜ í”„ë¦¬íŒ¹, ê¸°ë³¸ ìŠ¤í”„ë¼ì´íŠ¸ëŠ” Full ì´ë‹¤.
     [SerializeField]
     private Image heartPrefab;
 
-    // ÇÏÆ® ½ºÇÁ¶óÀÌÆ®ÀÇ ¹è¿­, ¼ø¼­´ë·Î Full, Half, Empty ÇÏÆ®ÀÌ´Ù.
+    // í•˜íŠ¸ ìŠ¤í”„ë¼ì´íŠ¸ì˜ ë°°ì—´, ìˆœì„œëŒ€ë¡œ Full, Half, Empty í•˜íŠ¸ì´ë‹¤.
     [SerializeField]
     private Sprite[] heartSprites;
 
-    // ÇÏÆ® ½ºÇÁ¶óÀÌÆ®µéÀÇ ÀÎµ¦½º¸¦ ³ªÅ¸³»´Â »ó¼ö
+    // í•˜íŠ¸ ìŠ¤í”„ë¼ì´íŠ¸ë“¤ì˜ ì¸ë±ìŠ¤ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìƒìˆ˜
     private const int FULL = 0;
     private const int HALF = 1;
     private const int EMPTY = 2;
 
-    // Äµ¹ö½º¿¡ Ç¥½ÃµÉ ÇÏÆ® ¿ÀºêÁ§Æ®ÀÇ ¹è¿­, ¿ŞÂÊºÎÅÍ 0¹øÂ°ÀÌ´Ù.
+    // ìº”ë²„ìŠ¤ì— í‘œì‹œë  í•˜íŠ¸ ì˜¤ë¸Œì íŠ¸ì˜ ë°°ì—´, ì™¼ìª½ë¶€í„° 0ë²ˆì§¸ì´ë‹¤.
     private Image[] hearts;
 
-    // ÇÏÆ® ¿ÀºêÁ§Æ® »çÀÌÀÇ °Å¸® , 31.8 + 5
+    // í•˜íŠ¸ ì˜¤ë¸Œì íŠ¸ ì‚¬ì´ì˜ ê±°ë¦¬ , 31.8 + 5
     private float offsetX = 36.8f;
 
     private void Start()
     {
-        // ÃÖ´ë Ã¼·Â¸¸Å­ÀÇ ÇÏÆ® ¿ÀºêÁ§Æ®¸¦ »ı¼ºÇÑ´Ù.
+        // ìµœëŒ€ ì²´ë ¥ë§Œí¼ì˜ í•˜íŠ¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ìƒì„±í•œë‹¤.
         hearts = new Image[(int)playerHP.MaxHP];
 
         for (int i = 0; i < hearts.Length; ++i)
@@ -41,7 +41,7 @@ public class ManageHeart : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾îÀÇ HP °¡ °¨¼ÒµÇ¸é È£ÃâµÇ´Â ÇÔ¼ö
+    // í”Œë ˆì´ì–´ì˜ HP ê°€ ê°ì†Œë˜ë©´ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
     public void ApplyDamageToHeart(float damage)
     {
         if (damage == 0)
@@ -55,7 +55,7 @@ public class ManageHeart : MonoBehaviour
         }
     }
 
-    // ÇÏÆ® UI ¸¦ ÃÊ±âÈ­ ½ÃÅ²´Ù.
+    // í•˜íŠ¸ UI ë¥¼ ì´ˆê¸°í™” ì‹œí‚¨ë‹¤.
     public void InitializeHeart()
     {
         for (int i = 0; i < hearts.Length; ++i)

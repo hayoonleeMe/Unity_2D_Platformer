@@ -6,13 +6,13 @@ public class CameraAlignment : MonoBehaviour
     [SerializeField]
     private StageData stageData;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ yÁÂÇ¥¿¡ Ãß°¡µÇ´Â °ª
+    // í”Œë ˆì´ì–´ì˜ yì¢Œí‘œì— ì¶”ê°€ë˜ëŠ” ê°’
     private float offsetY = 2.0f;
 
-    // Ä«¸Ş¶ó°¡ ÀÌµ¿ÇÏÁö ¾Êµµ·Ï Á¦ÇÑÇÏ´Â ÃÖ¼Ò, ÃÖ´ë xÁÂÇ¥
+    // ì¹´ë©”ë¼ê°€ ì´ë™í•˜ì§€ ì•Šë„ë¡ ì œí•œí•˜ëŠ” ìµœì†Œ, ìµœëŒ€ xì¢Œí‘œ
     private float minLimitX, maxLimitX;
 
-    // Ä«¸Ş¶ó°¡ ÀÌµ¿ÇÏÁö ¾Êµµ·Ï Á¦ÇÑÇÏ´Â ÃÖ¼Ò, ÃÖ´ë yÁÂÇ¥
+    // ì¹´ë©”ë¼ê°€ ì´ë™í•˜ì§€ ì•Šë„ë¡ ì œí•œí•˜ëŠ” ìµœì†Œ, ìµœëŒ€ yì¢Œí‘œ
     private float minLimitY, maxLimitY;
 
     private void Awake()
@@ -32,12 +32,12 @@ public class CameraAlignment : MonoBehaviour
 
     private void LateUpdate()
     {
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®°¡ ÀÌµ¿ÇÑ ÈÄ Ä«¸Ş¶ó¸¦ ÇÃ·¹ÀÌ¾îÀÇ À§Ä¡·Î ÀÌµ¿½ÃÅ²´Ù.
+        // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ê°€ ì´ë™í•œ í›„ ì¹´ë©”ë¼ë¥¼ í”Œë ˆì´ì–´ì˜ ìœ„ì¹˜ë¡œ ì´ë™ì‹œí‚¨ë‹¤.
         Vector3 cameraPosition = transform.position;
         cameraPosition.x = playerTransform.position.x;
         cameraPosition.y = playerTransform.position.y + offsetY;
 
-        // Ä«¸Ş°¡°¡ ÃÖ¼Ò, ÃÖ´ë x, yÁÂÇ¥¸¦ ³ÑÁö ¾Êµµ·Ï Á¶Á¤ÇÏ¿© ÀÌµ¿½ÃÅ²´Ù.
+        // ì¹´ë©”ê°€ê°€ ìµœì†Œ, ìµœëŒ€ x, yì¢Œí‘œë¥¼ ë„˜ì§€ ì•Šë„ë¡ ì¡°ì •í•˜ì—¬ ì´ë™ì‹œí‚¨ë‹¤.
         transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX),
                                          Mathf.Clamp(cameraPosition.y, minLimitY, maxLimitY), cameraPosition.z);
         //transform.position = new Vector3(Mathf.Clamp(cameraPosition.x, minLimitX, maxLimitX), cameraPosition.y, cameraPosition.z);

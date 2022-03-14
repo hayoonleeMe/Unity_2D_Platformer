@@ -5,20 +5,20 @@ public class Background : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
 
-    // ½ºÅ×ÀÌÁöÀÇ Á¤º¸¸¦ ´ã´Â °´Ã¼
+    // ìŠ¤í…Œì´ì§€ì˜ ì •ë³´ë¥¼ ë‹´ëŠ” ê°ì²´
     [SerializeField]
     private StageData stageData;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ »óÅÂ¸¦ Ã¼Å©ÇÏ´Â ½Ã°£
+    // í”Œë ˆì´ì–´ì˜ ìƒíƒœë¥¼ ì²´í¬í•˜ëŠ” ì‹œê°„
     private const float CHECK_SECONDS = 0.07f;
 
-    // Ä«¸Ş¶ó ºäÆ÷Æ®ÀÇ xÃà Å©±â
+    // ì¹´ë©”ë¼ ë·°í¬íŠ¸ì˜ xì¶• í¬ê¸°
     private float halfViewPortXSize = 0.0f;
 
-    // Ä«¸Ş¶ó ºäÆ÷Æ®ÀÇ yÃà Å©±â
+    // ì¹´ë©”ë¼ ë·°í¬íŠ¸ì˜ yì¶• í¬ê¸°
     private float halfViewPortYSize = 0.0f;
 
-    // ¹è°æ ½ºÇÁ¶óÀÌÆ®¸¦ ÀÌµ¿½ÃÅ³Áö °áÁ¤ÇÏ´Â ¹üÀ§¸¦ Á¤ÇÏ´Â º¯¼ö
+    // ë°°ê²½ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì´ë™ì‹œí‚¬ì§€ ê²°ì •í•˜ëŠ” ë²”ìœ„ë¥¼ ì •í•˜ëŠ” ë³€ìˆ˜
     private float offset = 2.5f;
 
     private void Awake()
@@ -37,7 +37,7 @@ public class Background : MonoBehaviour
         StartCoroutine(CheckAlign());
     }
 
-    // ¹è°æ ½ºÇÁ¶óÀÌÆ®°¡ ÀÌµ¿ÇØ¾ß ÇÏ´ÂÁö CHECK_SECONDS ¸¶´Ù Ã¼Å©ÇÏ´Â ÄÚ·çÆ¾ ÇÔ¼ö
+    // ë°°ê²½ ìŠ¤í”„ë¼ì´íŠ¸ê°€ ì´ë™í•´ì•¼ í•˜ëŠ”ì§€ CHECK_SECONDS ë§ˆë‹¤ ì²´í¬í•˜ëŠ” ì½”ë£¨í‹´ í•¨ìˆ˜
     IEnumerator CheckAlign()
     {
         while (true)
@@ -48,13 +48,13 @@ public class Background : MonoBehaviour
             float cameraEdgeXRightPos = Camera.main.transform.position.x + halfViewPortXSize;
             float cameraEdgeXLeftPos = Camera.main.transform.position.x - halfViewPortXSize;
 
-            // ÇÃ·¹ÀÌ¾î°¡ ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿ÇÏ´Ù°¡ ¹è°æ ½ºÇÁ¶óÀÌÆ®¸¦ ¿Å±â´Â °æ¿ì
+            // í”Œë ˆì´ì–´ê°€ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™í•˜ë‹¤ê°€ ë°°ê²½ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì˜®ê¸°ëŠ” ê²½ìš°
             if (cameraEdgeXRightPos >= bgEdgeXRightPos - offset)
             {
                 Vector3 pos = transform.position;
                 transform.position = new Vector3(cameraEdgeXLeftPos + spriteRenderer.bounds.size.x / 2 - offset * 2, pos.y, pos.z);
             }
-            // ÇÃ·¹ÀÌ¾î°¡ ¿ŞÂÊÀ¸·Î ÀÌµ¿ÇÏ´Ù°¡ ¹è°æ ½ºÇÁ¶óÀÌÆ®¸¦ ¿Å±â´Â °æ¿ì
+            // í”Œë ˆì´ì–´ê°€ ì™¼ìª½ìœ¼ë¡œ ì´ë™í•˜ë‹¤ê°€ ë°°ê²½ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì˜®ê¸°ëŠ” ê²½ìš°
             else if (cameraEdgeXLeftPos <= bgEdgeXLeftPos + offset)
             {
                 Vector3 pos = transform.position;
@@ -67,13 +67,13 @@ public class Background : MonoBehaviour
             float cameraEdgeYUpPos = Camera.main.transform.position.y + halfViewPortYSize;
             float cameraEdgeYDownPos = Camera.main.transform.position.y - halfViewPortYSize;
 
-            // ÇÃ·¹ÀÌ¾î°¡ À§ÂÊÀ¸·Î ÀÌµ¿ÇÏ´Ù°¡ ¹è°æ ½ºÇÁ¶óÀÌÆ®¸¦ ¿Å±â´Â °æ¿ì
+            // í”Œë ˆì´ì–´ê°€ ìœ„ìª½ìœ¼ë¡œ ì´ë™í•˜ë‹¤ê°€ ë°°ê²½ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì˜®ê¸°ëŠ” ê²½ìš°
             if (cameraEdgeYUpPos >= bgEdgeYUpPos - offset)
             {
                 Vector3 pos = transform.position;
                 transform.position = new Vector3(pos.x, cameraEdgeYDownPos + spriteRenderer.bounds.size.y / 2 - offset * 2, pos.z);
             }
-            // ÇÃ·¹ÀÌ¾î°¡ ¾Æ·¡ÂÊÀ¸·Î ÀÌµ¿ÇÏ´Ù°¡ ¹è°æ ½ºÇÁ¶óÀÌÆ®¸¦ ¿Å±â´Â °æ¿ì
+            // í”Œë ˆì´ì–´ê°€ ì•„ë˜ìª½ìœ¼ë¡œ ì´ë™í•˜ë‹¤ê°€ ë°°ê²½ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì˜®ê¸°ëŠ” ê²½ìš°
             else if (cameraEdgeYDownPos <= bgEdgeYDownPos + offset)
             {
                 Vector3 pos = transform.position;

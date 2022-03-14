@@ -4,11 +4,11 @@ public class Movement2D : MonoBehaviour
 {
     private Rigidbody2D rigidBody2D;
 
-    // ÀÌµ¿ ¼Óµµ
+    // ì´ë™ ì†ë„
     [SerializeField]
     private float moveSpeed;
 
-    // ÀÌµ¿ ¹æÇâ
+    // ì´ë™ ë°©í–¥
     private Vector2 moveDirection = Vector2.zero;
 
     private void Awake()
@@ -18,11 +18,11 @@ public class Movement2D : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // ÀÌµ¿¹æÇâÀ¸·Î ÀÌµ¿ÇÑ´Ù.
+        // ì´ë™ë°©í–¥ìœ¼ë¡œ ì´ë™í•œë‹¤.
         rigidBody2D.velocity = new Vector2(moveDirection.x * moveSpeed, rigidBody2D.velocity.y);
     }
 
-    // ¿ÀºêÁ§Æ®ÀÇ ÀÌµ¿¹æÇâÀ» Á¤ÇÏ´Â ¸Ş¼Òµå
+    // ì˜¤ë¸Œì íŠ¸ì˜ ì´ë™ë°©í–¥ì„ ì •í•˜ëŠ” ë©”ì†Œë“œ
     public void MoveTo(Vector2 direction)
     {
         moveDirection = direction;

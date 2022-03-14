@@ -3,35 +3,35 @@ using UnityEngine;
 
 public class PlayerHP : MonoBehaviour
 {
-    // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®ÀÇ ½ºÇÁ¶óÀÌÆ® ·»´õ·¯
+    // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ì˜ ìŠ¤í”„ë¼ì´íŠ¸ ë Œë”ëŸ¬
     private SpriteRenderer spriteRenderer;
     private PlayerController playerController;
 
-    // Äµ¹ö½º
+    // ìº”ë²„ìŠ¤
     [SerializeField]
     private ManageHeart manageHeart;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ ÃÖ´ë Ã¼·Â°ú ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ì˜ ìµœëŒ€ ì²´ë ¥ê³¼ í”„ë¡œí¼í‹°
     [SerializeField]
     private float maxHP;
     public float MaxHP => maxHP;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ ÇöÀç Ã¼·Â°ú ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ì˜ í˜„ì¬ ì²´ë ¥ê³¼ í”„ë¡œí¼í‹°
     private float currentHP;
     public float CurrentHP => currentHP;
 
-    // ÇÃ·¹ÀÌ¾î°¡ µ¥¹ÌÁö¸¦ ÀÔÀº »óÅÂÀÎÁö¸¦ ³ªÅ¸³»´Â »óÅÂº¯¼ö¿Í ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ê°€ ë°ë¯¸ì§€ë¥¼ ì…ì€ ìƒíƒœì¸ì§€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìƒíƒœë³€ìˆ˜ì™€ í”„ë¡œí¼í‹°
     private bool isHit = false;
     public bool IsHit => isHit;
 
-    // ÇÇ°İ ÈÄ ´ÙÀ½ ÇÇ°İÀÌ °¡´ÉÇÒ ¶§±îÁö °É¸®´Â ½Ã°£
+    // í”¼ê²© í›„ ë‹¤ìŒ í”¼ê²©ì´ ê°€ëŠ¥í•  ë•Œê¹Œì§€ ê±¸ë¦¬ëŠ” ì‹œê°„
     [SerializeField]
     private float hitDelay;
 
-    // ±ôºıÀÌ´Â ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ ±ôºıÀÓ µô·¹ÀÌ
+    // ê¹œë¹¡ì´ëŠ” ì• ë‹ˆë©”ì´ì…˜ì˜ ê¹œë¹¡ì„ ë”œë ˆì´
     private float blinkDelay = 0.1f;
 
-    // HitColorAnimation ÀÇ IEnumerator
+    // HitColorAnimation ì˜ IEnumerator
     IEnumerator blinkEffectRoutine;
 
     private void Awake()
@@ -47,13 +47,13 @@ public class PlayerHP : MonoBehaviour
         blinkEffectRoutine = BlinkEffectRoutine();
     }
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ÃÊ±âÈ­ ½ÃÅ²´Ù.
+    // í”Œë ˆì´ì–´ë¥¼ ì´ˆê¸°í™” ì‹œí‚¨ë‹¤.
     private void InitializeHP()
     {
         currentHP = maxHP;
     }
 
-    // damage ¸¸Å­ ÇÃ·¹ÀÌ¾îÀÇ Ã¼·ÂÀÌ ÇÏ¶ôÇÑ´Ù.
+    // damage ë§Œí¼ í”Œë ˆì´ì–´ì˜ ì²´ë ¥ì´ í•˜ë½í•œë‹¤.
     public void TakeDamage(float damage)
     {
         manageHeart.ApplyDamageToHeart(damage);
@@ -64,23 +64,23 @@ public class PlayerHP : MonoBehaviour
             OnDie();
         }
 
-        // ÇØ´ç ¸Ş¼Òµå¸¦ È£ÃâÇÏ·Á¸é isHit ÀÌ false ¶ó´Â Á¶°ÇÀÌ ÇÊ¿äÇÏµµ·Ï
-        // ÄÚµùÇß±â ¶§¹®¿¡ HitRoutine() ÄÚ·çÆ¾Àº Áßº¹ ½ÇÇàµÇÁö ¾Ê´Â´Ù.
+        // í•´ë‹¹ ë©”ì†Œë“œë¥¼ í˜¸ì¶œí•˜ë ¤ë©´ isHit ì´ false ë¼ëŠ” ì¡°ê±´ì´ í•„ìš”í•˜ë„ë¡
+        // ì½”ë”©í–ˆê¸° ë•Œë¬¸ì— HitRoutine() ì½”ë£¨í‹´ì€ ì¤‘ë³µ ì‹¤í–‰ë˜ì§€ ì•ŠëŠ”ë‹¤.
         StartCoroutine(HitRoutine());
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ Á×À» ¶§ È£ÃâµÈ´Ù.
+    // í”Œë ˆì´ì–´ê°€ ì£½ì„ ë•Œ í˜¸ì¶œëœë‹¤.
     private void OnDie()
     {
         Debug.Log("Player is Die");
 
-        // ÇÃ·¹ÀÌ¾î¸¦ ÃÊ±âÈ­½ÃÅ²´Ù.
+        // í”Œë ˆì´ì–´ë¥¼ ì´ˆê¸°í™”ì‹œí‚¨ë‹¤.
         playerController.InitializeControl();
         InitializeHP();
         manageHeart.InitializeHeart();
     }
 
-    // ±ôºıÀÓ ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ±¸ÇöÇÏ´Â ÄÚ·çÆ¾
+    // ê¹œë¹¡ì„ ì• ë‹ˆë©”ì´ì…˜ì„ êµ¬í˜„í•˜ëŠ” ì½”ë£¨í‹´
     private IEnumerator BlinkEffectRoutine()
     {
         Color color = spriteRenderer.color;
@@ -99,7 +99,7 @@ public class PlayerHP : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ ÇÇ°İ´çÇßÀ» ¶§ ½ÇÇàµÇ´Â ÄÚ·çÆ¾
+    // í”Œë ˆì´ì–´ê°€ í”¼ê²©ë‹¹í–ˆì„ ë•Œ ì‹¤í–‰ë˜ëŠ” ì½”ë£¨í‹´
     private IEnumerator HitRoutine()
     {
         isHit = true;

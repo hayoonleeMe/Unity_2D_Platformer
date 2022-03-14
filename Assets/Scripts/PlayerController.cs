@@ -9,63 +9,63 @@ public class PlayerController : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Rigidbody2D rigidBody2D;
 
-    // ½ºÅ×ÀÌÁöÀÇ Á¤º¸¸¦ ÀúÀåÇÏ´Â StageData
+    // ìŠ¤í…Œì´ì§€ì˜ ì •ë³´ë¥¼ ì €ì¥í•˜ëŠ” StageData
     [SerializeField]
     private StageData stageData;
 
-    // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®ÀÇ Á¢ÃËÀ» ÇÊÅÍ¸µÇÑ´Ù.
+    // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ì˜ ì ‘ì´‰ì„ í•„í„°ë§í•œë‹¤.
     private ContactFilter2D tilemapFilter;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ ÃÊ±â À§Ä¡
+    // í”Œë ˆì´ì–´ì˜ ì´ˆê¸° ìœ„ì¹˜
     private Vector2 initialPos = new Vector2(0.0f, -0.3f); 
 
-    // Á¡ÇÁ¿¡ °¡ÇØÁö´Â ¿îµ¿·®
+    // ì í”„ì— ê°€í•´ì§€ëŠ” ìš´ë™ëŸ‰
     private float jumpAmount = 16f;
 
-    // ½ºÆäÀÌ½º¹Ù¸¦ Å°´Ù¿îÇÒ¶§ ¸Å ÇÁ·¹ÀÓ¸¶´Ù jumpAmount¿¡ ´õÇØÁö´Â offset 
+    // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ í‚¤ë‹¤ìš´í• ë•Œ ë§¤ í”„ë ˆì„ë§ˆë‹¤ jumpAmountì— ë”í•´ì§€ëŠ” offset 
     private float jumpOffset = 0.05f;
 
-    // ÃÖ´ë Á¡ÇÁ ¿îµ¿·®
+    // ìµœëŒ€ ì í”„ ìš´ë™ëŸ‰
     private float MAX_JUMP_AMOUNT = 22.0f;
 
-    // ÃÖ¼Ò Á¡ÇÁ ¿îµ¿·®
+    // ìµœì†Œ ì í”„ ìš´ë™ëŸ‰
     private float MIN_JUMP_AMOUNT = 15.0f;
 
-    // ¿ÀºêÁ§Æ®¿¡¸¸ Àû¿ëÇÏ´Â ¿ÀºêÁ§Æ®°¡ ¿Ã¶ó°¥¶§ÀÇ Áß·Â °ª
+    // ì˜¤ë¸Œì íŠ¸ì—ë§Œ ì ìš©í•˜ëŠ” ì˜¤ë¸Œì íŠ¸ê°€ ì˜¬ë¼ê°ˆë•Œì˜ ì¤‘ë ¥ ê°’
     private const float IN_AIR_GRAVITY_SCALE = 5.0f;
 
-    // ÇöÀç °¡´ÉÇÑ Á¡ÇÁ È½¼ö
+    // í˜„ì¬ ê°€ëŠ¥í•œ ì í”„ íšŸìˆ˜
     public int jumpCount;
 
-    // ÃÖ´ë Á¡ÇÁ È½¼ö
+    // ìµœëŒ€ ì í”„ íšŸìˆ˜
     private int maxJumpCount = 2;
 
-    // ½ºÆäÀÌ½º¹Ù¸¦ ´©¸£°í ÀÖ´ÂÁö¸¦ ³ªÅ¸³»´Â »óÅÂº¯¼ö
+    // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ëˆ„ë¥´ê³  ìˆëŠ”ì§€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìƒíƒœë³€ìˆ˜
     private bool isSpaceDown = false;
 
-    // ÇÃ·¹ÀÌ¾î°¡ °øÁß¿¡ ÀÖ´ÂÁö¸¦ ³ªÅ¸³»´Â »óÅÂº¯¼ö
+    // í”Œë ˆì´ì–´ê°€ ê³µì¤‘ì— ìˆëŠ”ì§€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìƒíƒœë³€ìˆ˜
     private bool isInAir = false;
 
-    // ÇÃ·¹ÀÌ¾î°¡ ¶¥ À§¿¡ ÀÖ´ÂÁö¸¦ ¹İÈ¯ÇÏ´Â ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€ë¥¼ ë°˜í™˜í•˜ëŠ” í”„ë¡œí¼í‹°
     public bool IsGrounded => rigidBody2D.IsTouching(tilemapFilter);
 
-    // ÇÃ·¹ÀÌ¾î°¡ ÇÇ°İµÇ¾ú´ÂÁö¸¦ ³ªÅ¸³»´Â »óÅÂº¯¼ö¿Í ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ê°€ í”¼ê²©ë˜ì—ˆëŠ”ì§€ë¥¼ ë‚˜íƒ€ë‚´ëŠ” ìƒíƒœë³€ìˆ˜ì™€ í”„ë¡œí¼í‹°
     private bool isHurt = false;
     public bool IsHurt => isHurt;
 
-    // ÇÃ·¹ÀÌ¾îÀÇ ÃÖ¼Ò Å¸°İ ÁöÁ¡°ú ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ì˜ ìµœì†Œ íƒ€ê²© ì§€ì ê³¼ í”„ë¡œí¼í‹°
     [SerializeField]
     private Transform minAttackSpot;
     public Transform MinAttackSpot
     {
         get
         {
-            // ÇÃ·¹ÀÌ¾î°¡ ¿À¸¥ÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ Á¤¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì˜¤ë¥¸ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì •ë°©í–¥)
             if (transform.localScale.x > 0f)
             {
                 return minAttackSpot;
             }
-            // ÇÃ·¹ÀÌ¾î°¡ ¿ŞÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ ¿ª¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì™¼ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì—­ë°©í–¥)
             else
             {
                 return maxAttackSpot;
@@ -73,19 +73,19 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾îÀÇ ÃÖ´ë Å¸°İ ÁöÁ¡°ú ÇÁ·ÎÆÛÆ¼
+    // í”Œë ˆì´ì–´ì˜ ìµœëŒ€ íƒ€ê²© ì§€ì ê³¼ í”„ë¡œí¼í‹°
     [SerializeField]
     private Transform maxAttackSpot;
     public Transform MaxAttackSpot
     {
         get
         {
-            // ÇÃ·¹ÀÌ¾î°¡ ¿À¸¥ÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ Á¤¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì˜¤ë¥¸ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì •ë°©í–¥)
             if (transform.localScale.x > 0f)
             {
                 return maxAttackSpot;
             }
-            // ÇÃ·¹ÀÌ¾î°¡ ¿ŞÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ ¿ª¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì™¼ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì—­ë°©í–¥)
             else
             {
                 return minAttackSpot;
@@ -93,14 +93,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı½Ã°£
+    // í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒì‹œê°„
     private const float HURT_ANIMATION_DURATION = 0.3f;
 
     /// <summary>
-    /// °´Ã¼¸¦ ¹Ì¸® ¸¸µé¾î µÎ´Â °Ô ÆÛÆ÷¸Õ½º¿¡ °ü·ÃÀÖ´ÂÁö È®ÀÎ ÇÊ¿ä
-    /// -> ÄÚ·çÆ¾ ÃÖÀûÈ­ ÇÊ¿ä
+    /// ê°ì²´ë¥¼ ë¯¸ë¦¬ ë§Œë“¤ì–´ ë‘ëŠ” ê²Œ í¼í¬ë¨¼ìŠ¤ì— ê´€ë ¨ìˆëŠ”ì§€ í™•ì¸ í•„ìš”
+    /// -> ì½”ë£¨í‹´ ìµœì í™” í•„ìš”
     /// </summary>
-    // ÇÇ°İ ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı½Ã°£À» ³ªÅ¸³»´Â WaitForSeconds °´Ã¼
+    // í”¼ê²© ì• ë‹ˆë©”ì´ì…˜ ì¬ìƒì‹œê°„ì„ ë‚˜íƒ€ë‚´ëŠ” WaitForSeconds ê°ì²´
     private WaitForSeconds hurtAnimationDuration;
 
     private void Awake()
@@ -120,10 +120,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        // Å°º¸µå ÀÔ·ÂÀ» ¹Ş¾Æ¼­ ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿¹æÇâÀ» Á¤ÇÑ´Ù.
+        // í‚¤ë³´ë“œ ì…ë ¥ì„ ë°›ì•„ì„œ í”Œë ˆì´ì–´ì˜ ì´ë™ë°©í–¥ì„ ì •í•œë‹¤.
         float horizontal = Input.GetAxisRaw("Horizontal");
 
-        // ÀÌµ¿¹æÇâ¿¡ ¸ÂÃç ÇÃ·¹ÀÌ¾îÀÇ ½ºÇÁ¶óÀÌÆ®¸¦ ÁÂ¿ì·Î ¹İÀü½ÃÅ²´Ù.
+        // ì´ë™ë°©í–¥ì— ë§ì¶° í”Œë ˆì´ì–´ì˜ ìŠ¤í”„ë¼ì´íŠ¸ë¥¼ ì¢Œìš°ë¡œ ë°˜ì „ì‹œí‚¨ë‹¤.
         if (transform.localScale.x * horizontal < 0f)
         {
             Vector3 scale = transform.localScale;
@@ -131,11 +131,11 @@ public class PlayerController : MonoBehaviour
             transform.localScale = scale;
         }
 
-        // ÇÃ·¹ÀÌ¾î¸¦ ÀÌµ¿½ÃÅ²´Ù.
+        // í”Œë ˆì´ì–´ë¥¼ ì´ë™ì‹œí‚¨ë‹¤.
         movement2D.MoveTo(new Vector2(horizontal, 0.0f));
 
-        // °È±â ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ½ÇÇàÇÑ´Ù.
-        // Á¡ÇÁ Áß¿¡´Â Á¡ÇÁ ¾Ö´Ï¸ŞÀÌ¼Ç¸¸ ½ÇÇàÇÑ´Ù.
+        // ê±·ê¸° ì• ë‹ˆë©”ì´ì…˜ì„ ì‹¤í–‰í•œë‹¤.
+        // ì í”„ ì¤‘ì—ëŠ” ì í”„ ì• ë‹ˆë©”ì´ì…˜ë§Œ ì‹¤í–‰í•œë‹¤.
         animator.SetFloat("speed", Mathf.Abs(horizontal));
 
         //IntensityControlJump();
@@ -145,15 +145,15 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        // ÇÃ·¹ÀÌ¾îÀÇ ÀÌµ¿¹İ°æÀ» Á¦ÇÑÇÑ´Ù.
+        // í”Œë ˆì´ì–´ì˜ ì´ë™ë°˜ê²½ì„ ì œí•œí•œë‹¤.
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, stageData.LimitMin.x + spriteRenderer.bounds.size.x / 2, stageData.LimitMax.x - spriteRenderer.bounds.size.x / 2),
                                          Mathf.Clamp(transform.position.y, stageData.LimitMin.y + spriteRenderer.bounds.size.y / 2, stageData.LimitMax.y - spriteRenderer.bounds.size.y / 2));
     }
 
     private void FixedUpdate()
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ¶¥ À§¿¡ ÀÖ´ÂÁö, °øÁß¿¡ ÀÖ´ÂÁö Ã¼Å©ÇÑ´Ù.
-        // ÇÃ·¹ÀÌ¾î°¡ ¶¥ À§¿¡ ÀÖÀ» ¶§
+        // í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆëŠ”ì§€, ê³µì¤‘ì— ìˆëŠ”ì§€ ì²´í¬í•œë‹¤.
+        // í”Œë ˆì´ì–´ê°€ ë•… ìœ„ì— ìˆì„ ë•Œ
         if (IsGrounded)
         {
             isInAir = false;
@@ -165,38 +165,38 @@ public class PlayerController : MonoBehaviour
                 jumpCount = maxJumpCount;
             }
         }
-        // ÇÃ·¹ÀÌ¾î°¡ °øÁß¿¡ ÀÖÀ» ¶§
+        // í”Œë ˆì´ì–´ê°€ ê³µì¤‘ì— ìˆì„ ë•Œ
         else
         {
             isInAir = true;
             animator.SetBool("isJumping", isInAir);
         }
 
-        // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®°¡ Á¡ÇÁ¸¦ ÇÒ ¶§ Áß·Â °ªÀ» Á¶ÀıÇÑ´Ù.
+        // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ê°€ ì í”„ë¥¼ í•  ë•Œ ì¤‘ë ¥ ê°’ì„ ì¡°ì ˆí•œë‹¤.
         if (isInAir)
         {
             rigidBody2D.gravityScale = IN_AIR_GRAVITY_SCALE;
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ÃÊ±âÈ­ ½ÃÅ²´Ù.
+    // í”Œë ˆì´ì–´ë¥¼ ì´ˆê¸°í™” ì‹œí‚¨ë‹¤.
     public void InitializeControl()
     {
         transform.position = initialPos;
     }
 
-    // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®¸¦ Á¡ÇÁ½ÃÅ°´Â ¸Ş¼Òµå
+    // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸ë¥¼ ì í”„ì‹œí‚¤ëŠ” ë©”ì†Œë“œ
     private void Jump()
     {
         Vector2 vel = rigidBody2D.velocity;
         vel.y = 0.0f;
         rigidBody2D.velocity = vel;
 
-        // ¿îµ¿·®À» ´õÇØ Á¡ÇÁ½ÃÅ²´Ù.
+        // ìš´ë™ëŸ‰ì„ ë”í•´ ì í”„ì‹œí‚¨ë‹¤.
         rigidBody2D.AddForce(Vector2.up * jumpAmount, ForceMode2D.Impulse);
     }
 
-    // ÇÃ·¹ÀÌ¾î¸¦ ¿©·¯¹ø Á¡ÇÁ½ÃÅ²´Ù.
+    // í”Œë ˆì´ì–´ë¥¼ ì—¬ëŸ¬ë²ˆ ì í”„ì‹œí‚¨ë‹¤.
     private void MultipleJump()
     {
         if (Input.GetKeyDown(KeyCode.Space))
@@ -216,23 +216,23 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ½ºÆäÀÌ½º¹Ù¸¦ Å°´Ù¿îÇØ Á¡ÇÁÀÇ ¼¼±â¸¦ Á¶ÀıÇÑ´Ù.
+    // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ í‚¤ë‹¤ìš´í•´ ì í”„ì˜ ì„¸ê¸°ë¥¼ ì¡°ì ˆí•œë‹¤.
     private void IntensityControlJump()
     {
-        // ½ºÆäÀÌ½º¹Ù¸¦ Å°´Ù¿îÁßÀÌ ¾Æ´Ò¶§¸¸ ½ºÆäÀÌ½º¹Ù¸¦ ´©¸£´ÂÁö Ã¼Å©ÇÑ´Ù.
+        // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ í‚¤ë‹¤ìš´ì¤‘ì´ ì•„ë‹ë•Œë§Œ ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ëˆ„ë¥´ëŠ”ì§€ ì²´í¬í•œë‹¤.
         if (!isSpaceDown)
         {
             isSpaceDown = Input.GetKeyDown(KeyCode.Space);
         }
 
-        // Á¡ÇÁÁßÀÌ ¾Æ´Ï¸é¼­ ½ºÆäÀÌ½º¹Ù¸¦ Å°´Ù¿î ÁßÀÌ¸é Á¡ÇÁ¸¦ ÁØºñÇÑ´Ù.
-        // ½ºÆäÀÌ½º¹Ù¸¦ Å°´Ù¿îÇÒ¼ö·Ï ÇÃ·¹ÀÌ¾î°¡ Á¡ÇÁÇÏ´Â ³ôÀÌ°¡ Ä¿Áø´Ù.
+        // ì í”„ì¤‘ì´ ì•„ë‹ˆë©´ì„œ ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ í‚¤ë‹¤ìš´ ì¤‘ì´ë©´ ì í”„ë¥¼ ì¤€ë¹„í•œë‹¤.
+        // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ í‚¤ë‹¤ìš´í• ìˆ˜ë¡ í”Œë ˆì´ì–´ê°€ ì í”„í•˜ëŠ” ë†’ì´ê°€ ì»¤ì§„ë‹¤.
         if (isSpaceDown && !isInAir)
         {
             PrepareJump();
         }
 
-        // ½ºÆäÀÌ½º¹Ù¸¦ ¶¼¸é Á¤ÇØÁø Á¡ÇÁ ¿îµ¿·®¸¸Å­ ÇÃ·¹ÀÌ¾î°¡ Á¡ÇÁÇÑ´Ù.
+        // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ ë–¼ë©´ ì •í•´ì§„ ì í”„ ìš´ë™ëŸ‰ë§Œí¼ í”Œë ˆì´ì–´ê°€ ì í”„í•œë‹¤.
         bool spaceUp = Input.GetKeyUp(KeyCode.Space);
         if (spaceUp && !isInAir)
         {
@@ -242,17 +242,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ½ºÆäÀÌ½º¹Ù¸¦ Å°´Ù¿îÇÒ ¶§ È£ÃâµÇ´Â ÇÔ¼ö
-    // Á¡ÇÁ¿¡ °¡ÇØÁö´Â ¿îµ¿·®ÀÌ Á¡Á¡ ´Ã¾î³­´Ù.
+    // ìŠ¤í˜ì´ìŠ¤ë°”ë¥¼ í‚¤ë‹¤ìš´í•  ë•Œ í˜¸ì¶œë˜ëŠ” í•¨ìˆ˜
+    // ì í”„ì— ê°€í•´ì§€ëŠ” ìš´ë™ëŸ‰ì´ ì ì  ëŠ˜ì–´ë‚œë‹¤.
     private void PrepareJump()
     {
-        // ¸Å ÇÁ·¹ÀÓ¸¶´Ù Á¡ÇÁ ¿îµ¿·®ÀÌ ´Ã¾î³­´Ù.
+        // ë§¤ í”„ë ˆì„ë§ˆë‹¤ ì í”„ ìš´ë™ëŸ‰ì´ ëŠ˜ì–´ë‚œë‹¤.
         jumpAmount += jumpOffset;
-        // ÃÖ´ë Á¡ÇÁ ¿îµ¿·®À» ³ÑÁö ¾Ê´Â´Ù.
+        // ìµœëŒ€ ì í”„ ìš´ë™ëŸ‰ì„ ë„˜ì§€ ì•ŠëŠ”ë‹¤.
         jumpAmount = Mathf.Clamp(jumpAmount, MIN_JUMP_AMOUNT, MAX_JUMP_AMOUNT);
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ Àå¾Ö¹°¿¡ ´ê¾ÒÀ» ¶§, µÚ·Î ¹Ğ·Á³ª°Ô ÇÑ´Ù.
+    // í”Œë ˆì´ì–´ê°€ ì¥ì• ë¬¼ì— ë‹¿ì•˜ì„ ë•Œ, ë’¤ë¡œ ë°€ë ¤ë‚˜ê²Œ í•œë‹¤.
     public void Bounce(float power, BounceMode mode = BounceMode.Normal)
     {
         rigidBody2D.velocity = Vector2.zero;
@@ -265,7 +265,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ Àå¾Ö¹°¿¡ ´ê¾ÒÀ» ¶§, µÚ·Î ¹Ğ·Á³ª°Ô ÇÑ´Ù.
+    // í”Œë ˆì´ì–´ê°€ ì¥ì• ë¬¼ì— ë‹¿ì•˜ì„ ë•Œ, ë’¤ë¡œ ë°€ë ¤ë‚˜ê²Œ í•œë‹¤.
     public void Bounce(Vector2 powerDir, BounceMode mode = BounceMode.Normal)
     {
         rigidBody2D.velocity = Vector2.zero;
@@ -278,7 +278,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Hurt ¾Ö´Ï¸ŞÀÌ¼ÇÀ» Àç»ıÇÑ ÈÄ HURT_ANIMATION_DURATION ÀÌÈÄ Hurt ¾Ö´Ï¸ŞÀÌ¼ÇÀ» ²ô´Â ÄÚ·çÆ¾
+    // Hurt ì• ë‹ˆë©”ì´ì…˜ì„ ì¬ìƒí•œ í›„ HURT_ANIMATION_DURATION ì´í›„ Hurt ì• ë‹ˆë©”ì´ì…˜ì„ ë„ëŠ” ì½”ë£¨í‹´
     private IEnumerator BounceRoutine()
     {   
         animator.SetBool("isHurt", true);

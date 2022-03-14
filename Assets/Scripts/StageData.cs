@@ -1,19 +1,19 @@
 using UnityEngine;
 
-// ½ºÅ×ÀÌÁöÀÇ ÃÖ¼Ò, ÃÖ´ë x, y ÁÂÇ¥¸¦ ÇÁ·ÎÆÛÆ¼·Î Á¦°øÇÏ´Â Å¬·¡½º
-// Unity Editor ÀÇ Asset À¸·Î Ãß°¡ÇÒ ¼ö ÀÖ´Ù.
+// ìŠ¤í…Œì´ì§€ì˜ ìµœì†Œ, ìµœëŒ€ x, y ì¢Œí‘œë¥¼ í”„ë¡œí¼í‹°ë¡œ ì œê³µí•˜ëŠ” í´ë˜ìŠ¤
+// Unity Editor ì˜ Asset ìœ¼ë¡œ ì¶”ê°€í•  ìˆ˜ ìˆë‹¤.
 [CreateAssetMenu]
 public class StageData : ScriptableObject
 {
-    // ¸ÊÀÇ ÃÖ¼Ò ÁÂÇ¥
+    // ë§µì˜ ìµœì†Œ ì¢Œí‘œ
     [SerializeField]
     private Vector2 limitMin;
 
-    // ¸ÊÀÇ ÃÖ´ë ÁÂÇ¥
+    // ë§µì˜ ìµœëŒ€ ì¢Œí‘œ
     [SerializeField]
     private Vector2 limitMax;
 
-    // ´Ù¸¥ Å¬·¡½º¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â ÇÁ·ÎÆÛÆ¼
+    // ë‹¤ë¥¸ í´ë˜ìŠ¤ì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìˆëŠ” í”„ë¡œí¼í‹°
     public Vector2 LimitMin => limitMin;
     public Vector2 LimitMax => limitMax;
 }

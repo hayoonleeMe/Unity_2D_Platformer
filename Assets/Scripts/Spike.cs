@@ -3,24 +3,24 @@ using Environment;
 
 public class Spike : MonoBehaviour
 {
-    // ÇÃ·¹ÀÌ¾î¿¡°Ô ÀÔÈ÷´Â ½ºÆÄÀÌÅ© µ¥¹ÌÁö
+    // í”Œë ˆì´ì–´ì—ê²Œ ì…íˆëŠ” ìŠ¤íŒŒì´í¬ ë°ë¯¸ì§€
     [SerializeField]
     private float damage;
 
-    // ½ºÆÄÀÌÅ©°¡ ÇÃ·¹ÀÌ¾î¸¦ ¹Ğ¾î³»´Â Èû
+    // ìŠ¤íŒŒì´í¬ê°€ í”Œë ˆì´ì–´ë¥¼ ë°€ì–´ë‚´ëŠ” í˜
     [SerializeField]
     private float bouncePower;
 
-    // ½ºÆÄÀÌÅ©¿¡ ºÎµúÈù ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®
+    // ìŠ¤íŒŒì´í¬ì— ë¶€ë”ªíŒ í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸
     private GameObject playerObject = null;
 
     private void FixedUpdate()
     {
-        // ÇÃ·¹ÀÌ¾î°¡ ½ºÆÄÀÌÅ©¿¡ ´ê¾Æ playerObject ¸¦ ¹Ş¾Æ¿À°í,
-        // ÇÃ·¹ÀÌ¾î°¡ ÇÇ°İ ´çÇÑ »óÅÂ°¡ ¾Æ´Ò ¶§
+        // í”Œë ˆì´ì–´ê°€ ìŠ¤íŒŒì´í¬ì— ë‹¿ì•„ playerObject ë¥¼ ë°›ì•„ì˜¤ê³ ,
+        // í”Œë ˆì´ì–´ê°€ í”¼ê²© ë‹¹í•œ ìƒíƒœê°€ ì•„ë‹ ë•Œ
         if (playerObject != null && playerObject.GetComponent<PlayerHP>().IsHit == false)
         {
-            // ÇÃ·¹ÀÌ¾î¿¡°Ô µ¥¹ÌÁö¸¦ ÀÔÈ÷°í µÚ·Î ¹Ğ¸®°Ô ÇÑ´Ù.
+            // í”Œë ˆì´ì–´ì—ê²Œ ë°ë¯¸ì§€ë¥¼ ì…íˆê³  ë’¤ë¡œ ë°€ë¦¬ê²Œ í•œë‹¤.
             playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
             playerObject.GetComponent<PlayerController>().Bounce(bouncePower, BounceMode.Damage);
         }

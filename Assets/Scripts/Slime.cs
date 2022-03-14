@@ -10,53 +10,53 @@ public class Slime : MonoBehaviour
     private PolygonCollider2D polygonCollider2D;
     private Animator animator;
 
-    // ½½¶óÀÓÀÌ Á×¾úÀ» ¶§ÀÇ ½ºÇÁ¶óÀÌÆ®
+    // ìŠ¬ë¼ì„ì´ ì£½ì—ˆì„ ë•Œì˜ ìŠ¤í”„ë¼ì´íŠ¸
     [SerializeField]
     private Sprite slimeDead;
 
-    // ÇÃ·¹ÀÌ¾î¿¡°Ô ÀÔÈ÷´Â ½½¶óÀÓ µ¥¹ÌÁö
+    // í”Œë ˆì´ì–´ì—ê²Œ ì…íˆëŠ” ìŠ¬ë¼ì„ ë°ë¯¸ì§€
     [SerializeField]
     private float damage;
 
-    // BounceMode.Damage Å¸ÀÔÀÇ Bounce ¸Ş¼Òµå¿¡ Àû¿ëµÇ´Â ½½¶óÀÓÀÌ ÇÃ·¹ÀÌ¾î¸¦ ¹Ğ¾î³»´Â Èû
+    // BounceMode.Damage íƒ€ì…ì˜ Bounce ë©”ì†Œë“œì— ì ìš©ë˜ëŠ” ìŠ¬ë¼ì„ì´ í”Œë ˆì´ì–´ë¥¼ ë°€ì–´ë‚´ëŠ” í˜
     [SerializeField]
     private float damageBouncePower;
 
-    // BounceMode.Normal Å¸ÀÔÀÇ Bounce ¸Ş¼Òµå¿¡ Àû¿ëµÇ´Â ½½¶óÀÓÀÌ ÇÃ·¹ÀÌ¾î¸¦ ¹Ğ¾î³»´Â Èû
+    // BounceMode.Normal íƒ€ì…ì˜ Bounce ë©”ì†Œë“œì— ì ìš©ë˜ëŠ” ìŠ¬ë¼ì„ì´ í”Œë ˆì´ì–´ë¥¼ ë°€ì–´ë‚´ëŠ” í˜
     [SerializeField]
     private float normalBouncePower;
 
-    // ÇÃ·¹ÀÌ¾î ¿ÀºêÁ§Æ®
+    // í”Œë ˆì´ì–´ ì˜¤ë¸Œì íŠ¸
     private GameObject playerObject = null;
 
-    // ½½¶óÀÓÀÇ ´ÙÀ½ ¹æÇâ
+    // ìŠ¬ë¼ì„ì˜ ë‹¤ìŒ ë°©í–¥
     private Vector2 nextDir = Vector2.zero;
 
-    // SlimeMoveRoutine ÄÚ·çÆ¾ÀÇ ¹İÈ¯°ª IEnumerator
+    // SlimeMoveRoutine ì½”ë£¨í‹´ì˜ ë°˜í™˜ê°’ IEnumerator
     private IEnumerator slimeMoveRoutine;
 
-    // SizeDownEffect ¸¦ ÁøÇàÇÒ ½Ã°£
+    // SizeDownEffect ë¥¼ ì§„í–‰í•  ì‹œê°„
     private const float SIZE_DOWN_EFFECT_DURATION = 1.0f;
 
-    // ½½¶óÀÓÀÌ ÀÌµ¿ ¹æÇâÀ» ¹Ù²Ù´Â µô·¹ÀÌ
+    // ìŠ¬ë¼ì„ì´ ì´ë™ ë°©í–¥ì„ ë°”ê¾¸ëŠ” ë”œë ˆì´
     private const float DIR_CHANGE_DELAY = 2.0f;
 
-    // ½½¶óÀÓ »ç¸Á ½Ã È¸ÀüÇÒ ¶§ÀÇ ¼Óµµ
+    // ìŠ¬ë¼ì„ ì‚¬ë§ ì‹œ íšŒì „í•  ë•Œì˜ ì†ë„
     private const float ROTATE_SPEED = 250.0f;
 
-    // ½½¶óÀÓÀÇ ÃÖ¼Ò ÇÇ°İÁöÁ¡°ú ÇÁ·ÎÆÛÆ¼
+    // ìŠ¬ë¼ì„ì˜ ìµœì†Œ í”¼ê²©ì§€ì ê³¼ í”„ë¡œí¼í‹°
     [SerializeField]
     private Transform minHitSpot;
     private Transform MinHitSpot
     {
         get
         {
-            // ÇÃ·¹ÀÌ¾î°¡ ¿ŞÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ Á¤¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì™¼ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì •ë°©í–¥)
             if (transform.localScale.x > 0f)
             {
                 return minHitSpot;
             }
-            // ÇÃ·¹ÀÌ¾î°¡ ¿À¸¥ÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ ¿ª¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì˜¤ë¥¸ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì—­ë°©í–¥)
             else
             {
                 return maxHitSpot;
@@ -64,19 +64,19 @@ public class Slime : MonoBehaviour
         }
     }
 
-    // ½½¶óÀÓÀÇ ÃÖ´ë ÇÇ°İÁöÁ¡°ú ÇÁ·ÎÆÛÆ¼
+    // ìŠ¬ë¼ì„ì˜ ìµœëŒ€ í”¼ê²©ì§€ì ê³¼ í”„ë¡œí¼í‹°
     [SerializeField]
     private Transform maxHitSpot;
     private Transform MaxHitSpot
     {
         get
         {
-            // ÇÃ·¹ÀÌ¾î°¡ ¿ŞÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ Á¤¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì™¼ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì •ë°©í–¥)
             if (transform.localScale.x > 0f)
             {
                 return maxHitSpot;
             }
-            // ÇÃ·¹ÀÌ¾î°¡ ¿À¸¥ÂÊÀ» º¸°í ÀÖÀ» ¶§ (Å¸°İÁöÁ¡ÀÇ ¼ø¼­°¡ ¿ª¹æÇâ)
+            // í”Œë ˆì´ì–´ê°€ ì˜¤ë¥¸ìª½ì„ ë³´ê³  ìˆì„ ë•Œ (íƒ€ê²©ì§€ì ì˜ ìˆœì„œê°€ ì—­ë°©í–¥)
             else
             {
                 return minHitSpot;
@@ -102,12 +102,12 @@ public class Slime : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // ·¹ÀÌÄ³½ºÆ®·Î ½½¶óÀÓÀÇ ¾Õ¿¡ Ground Å¸ÀÏÀÌ ÀÖ´ÂÁö Ã¼Å©ÇÑ´Ù.
+        // ë ˆì´ìºìŠ¤íŠ¸ë¡œ ìŠ¬ë¼ì„ì˜ ì•ì— Ground íƒ€ì¼ì´ ìˆëŠ”ì§€ ì²´í¬í•œë‹¤.
 
         Debug.DrawRay(rigidBody2D.position + nextDir, Vector3.down, Color.red);
         RaycastHit2D rayHit = Physics2D.Raycast(rigidBody2D.position + nextDir, Vector3.down, 1.0f, LayerMask.GetMask("Ground"));
 
-        // Ground Å¸ÀÏÀÌ ¾øÀ¸¸é ½½¶óÀÓÀÇ ÀÌµ¿¹æÇâÀ» ¹İ´ë·Î ¹Ù²Û´Ù.
+        // Ground íƒ€ì¼ì´ ì—†ìœ¼ë©´ ìŠ¬ë¼ì„ì˜ ì´ë™ë°©í–¥ì„ ë°˜ëŒ€ë¡œ ë°”ê¾¼ë‹¤.
         if (rayHit.collider == null)
         {
             nextDir *= -1;
@@ -118,38 +118,38 @@ public class Slime : MonoBehaviour
             //spriteRenderer.flipX = !spriteRenderer.flipX;
         }
 
-        // ½½¶óÀÓ°úÀÇ Ãæµ¹¿¡ ´ëÇÑ Ã³¸®¸¦ ÇÑ´Ù.
+        // ìŠ¬ë¼ì„ê³¼ì˜ ì¶©ëŒì— ëŒ€í•œ ì²˜ë¦¬ë¥¼ í•œë‹¤.
         if (playerObject != null)
         {
-            // ½½¶óÀÓÀÇ ¿·¿¡ ÇÃ·¹ÀÌ¾î°¡ ºÎµúÈ÷¸é ÇÃ·¹ÀÌ¾î¿¡°Ô µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
+            // ìŠ¬ë¼ì„ì˜ ì˜†ì— í”Œë ˆì´ì–´ê°€ ë¶€ë”ªíˆë©´ í”Œë ˆì´ì–´ì—ê²Œ ë°ë¯¸ì§€ë¥¼ ì…íŒë‹¤.
             if (!CanPlayerAttackSlime() && playerObject.GetComponent<PlayerHP>().IsHit == false)
             {
-                // ÇÃ·¹ÀÌ¾î°Ô µ¥¹ÌÁö¸¦ ÀÔÈù´Ù.
+                // í”Œë ˆì´ì–´ê²Œ ë°ë¯¸ì§€ë¥¼ ì…íŒë‹¤.
                 playerObject.GetComponent<PlayerHP>().TakeDamage(damage);
-                // ÇÃ·¹ÀÌ¾î¸¦ Æ¢¾î¿À¸£°Ô ÇÑ´Ù.
+                // í”Œë ˆì´ì–´ë¥¼ íŠ€ì–´ì˜¤ë¥´ê²Œ í•œë‹¤.
                 playerObject.GetComponent<PlayerController>().Bounce(damageBouncePower, BounceMode.Damage);
             }
-            // ½½¶óÀÓÀÇ À§¸¦ ÇÃ·¹ÀÌ¾î°¡ ¹âÀ¸¸é ½½¶óÀÓÀº Á×´Â´Ù.
+            // ìŠ¬ë¼ì„ì˜ ìœ„ë¥¼ í”Œë ˆì´ì–´ê°€ ë°Ÿìœ¼ë©´ ìŠ¬ë¼ì„ì€ ì£½ëŠ”ë‹¤.
             else if (CanPlayerAttackSlime())
             {
-                // ÇÃ·¹ÀÌ¾î¸¦ Æ¢¾î¿À¸£°Ô ÇÑ´Ù.
+                // í”Œë ˆì´ì–´ë¥¼ íŠ€ì–´ì˜¤ë¥´ê²Œ í•œë‹¤.
                 playerObject.GetComponent<PlayerController>().Bounce(normalBouncePower);
 
-                // ½½¶óÀÓÀº ¼Ò¸êÇÑ´Ù.
+                // ìŠ¬ë¼ì„ì€ ì†Œë©¸í•œë‹¤.
                 OnDie();
             }
         }
     }
 
-    // ÇÃ·¹ÀÌ¾î°¡ ½½¶óÀÓÀ» °ø°İÇÒ ¼ö ÀÖ´ÂÁö¸¦ ¹İÈ¯ÇÑ´Ù.
+    // í”Œë ˆì´ì–´ê°€ ìŠ¬ë¼ì„ì„ ê³µê²©í•  ìˆ˜ ìˆëŠ”ì§€ë¥¼ ë°˜í™˜í•œë‹¤.
     private bool CanPlayerAttackSlime()
     {
         Rigidbody2D playerBody = playerObject.GetComponent<Rigidbody2D>();
         Transform playerMinAttackSpot = playerObject.GetComponent<PlayerController>().MinAttackSpot;
         Transform playerMaxAttackSpot = playerObject.GetComponent<PlayerController>().MaxAttackSpot;
 
-        // ÇÃ·¹ÀÌ¾îÀÇ Å¸°İ ÁöÁ¡ÀÌ ½½¶óÀÓÀÇ ÇÇ°İ ÁöÁ¡º¸´Ù À§¿¡ ÀÖ°í,
-        // ÇÃ·¹ÀÌ¾îÀÇ ÃÖ¼Ò, ÃÖ´ë Å¸°İ ÁöÁ¡ Áß ÇÑ °÷ÀÌ¶óµµ ½½¶óÀÓÀÇ ÇÇ°İÁöÁ¡ »çÀÌ¿¡ ÀÖ´Ù¸é ÇÃ·¹ÀÌ¾î´Â ½½¶óÀÓÀ» °ø°İÇÒ ¼ö ÀÖ´Ù.
+        // í”Œë ˆì´ì–´ì˜ íƒ€ê²© ì§€ì ì´ ìŠ¬ë¼ì„ì˜ í”¼ê²© ì§€ì ë³´ë‹¤ ìœ„ì— ìˆê³ ,
+        // í”Œë ˆì´ì–´ì˜ ìµœì†Œ, ìµœëŒ€ íƒ€ê²© ì§€ì  ì¤‘ í•œ ê³³ì´ë¼ë„ ìŠ¬ë¼ì„ì˜ í”¼ê²©ì§€ì  ì‚¬ì´ì— ìˆë‹¤ë©´ í”Œë ˆì´ì–´ëŠ” ìŠ¬ë¼ì„ì„ ê³µê²©í•  ìˆ˜ ìˆë‹¤.
         if (playerBody.velocity.y < 0f && playerMinAttackSpot.position.y >= minHitSpot.position.y &&
             ((playerMinAttackSpot.position.x >= MinHitSpot.position.x && playerMinAttackSpot.position.x <= MaxHitSpot.position.x) ||
              (playerMaxAttackSpot.position.x >= MinHitSpot.position.x && playerMaxAttackSpot.position.x <= MaxHitSpot.position.x)))
@@ -160,7 +160,7 @@ public class Slime : MonoBehaviour
         return false;
     }
 
-    // ½½¶óÀÓÀ» ·£´ıÀ¸·Î ¿ŞÂÊÀ¸·Î ÀÌµ¿, ¿À¸¥ÂÊÀ¸·Î ÀÌµ¿, Á¦ÀÚ¸®¿¡ ±×´ë·Î Áß ÇÏ³ªÀÇ ÀÌµ¿À» ¼öÇàÇÏµµ·Ï ÇÏ´Â ÄÚ·çÆ¾
+    // ìŠ¬ë¼ì„ì„ ëœë¤ìœ¼ë¡œ ì™¼ìª½ìœ¼ë¡œ ì´ë™, ì˜¤ë¥¸ìª½ìœ¼ë¡œ ì´ë™, ì œìë¦¬ì— ê·¸ëŒ€ë¡œ ì¤‘ í•˜ë‚˜ì˜ ì´ë™ì„ ìˆ˜í–‰í•˜ë„ë¡ í•˜ëŠ” ì½”ë£¨í‹´
     private IEnumerator SlimeMoveRoutine()
     {
         while (true)
@@ -171,14 +171,14 @@ public class Slime : MonoBehaviour
         }
     }
 
-    // ½½¶óÀÓÀÇ ´ÙÀ½ ÀÌµ¿ ¹æÇâÀ» Á¤ÇÑ´Ù.
+    // ìŠ¬ë¼ì„ì˜ ë‹¤ìŒ ì´ë™ ë°©í–¥ì„ ì •í•œë‹¤.
     private void ChangeNextDir()
     {
         nextDir.x = Random.Range(-1, 2);
 
         movement2D.MoveTo(nextDir);
 
-        // ¹İ´ë ¹æÇâÀ¸·Î °¥ ¶§
+        // ë°˜ëŒ€ ë°©í–¥ìœ¼ë¡œ ê°ˆ ë•Œ
         if (nextDir.x * transform.localScale.x > 0.0f)
         {
             Vector3 scale = transform.localScale;
@@ -203,7 +203,7 @@ public class Slime : MonoBehaviour
         }
     }
 
-    // ½½¶óÀÓÀÌ Á×À» ¶§ È£ÃâµÈ´Ù.
+    // ìŠ¬ë¼ì„ì´ ì£½ì„ ë•Œ í˜¸ì¶œëœë‹¤.
     private void OnDie()
     {
         StopCoroutine(slimeMoveRoutine);
@@ -214,7 +214,7 @@ public class Slime : MonoBehaviour
         StartCoroutine(SizeDownAndRotateEffectRoutine());
     }
 
-    // ½½¶óÀÓ ½ºÇÁ¶óÀÌÆ®ÀÇ »çÀÌÁî¸¦ SIZE_DOWN_EFFECT_DURATION µ¿¾È 0À¸·Î ÁÙÀÌ°í ÁøÇà¹æÇâÀ¸·Î È¸Àü½ÃÅ°´Â ÄÚ·çÆ¾
+    // ìŠ¬ë¼ì„ ìŠ¤í”„ë¼ì´íŠ¸ì˜ ì‚¬ì´ì¦ˆë¥¼ SIZE_DOWN_EFFECT_DURATION ë™ì•ˆ 0ìœ¼ë¡œ ì¤„ì´ê³  ì§„í–‰ë°©í–¥ìœ¼ë¡œ íšŒì „ì‹œí‚¤ëŠ” ì½”ë£¨í‹´
     private IEnumerator SizeDownAndRotateEffectRoutine()
     {
         polygonCollider2D.enabled = false;
@@ -225,7 +225,7 @@ public class Slime : MonoBehaviour
         float elapsedTime = 0.0f;
         Vector2 originScale = transform.localScale;
 
-        // ½½¶óÀÓ ½ºÇÁ¶óÀÌÆ®°¡ ¹Ù¶óº¸°í ÀÖ´Â ¹æÇâÀÇ ¹İ´ë·Î È¸ÀüÇÑ´Ù.
+        // ìŠ¬ë¼ì„ ìŠ¤í”„ë¼ì´íŠ¸ê°€ ë°”ë¼ë³´ê³  ìˆëŠ” ë°©í–¥ì˜ ë°˜ëŒ€ë¡œ íšŒì „í•œë‹¤.
         float direction;
         if (transform.localScale.x > 0.0f)
         {
@@ -250,7 +250,7 @@ public class Slime : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // ½½¶óÀÓ ¿ÀºêÁ§Æ®¸¦ Æ¨°Ü¿À¸£°Ô ÇÑ´Ù.
+    // ìŠ¬ë¼ì„ ì˜¤ë¸Œì íŠ¸ë¥¼ íŠ•ê²¨ì˜¤ë¥´ê²Œ í•œë‹¤.
     private void BounceOff()
     {
         movement2D.MoveTo(Vector2.zero);
