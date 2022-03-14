@@ -56,12 +56,42 @@ public class PlayerController : MonoBehaviour
     // 플레이어의 최소 타격 지점과 프로퍼티
     [SerializeField]
     private Transform minAttackSpot;
-    public Transform MinAttackSpot => minAttackSpot;
+    public Transform MinAttackSpot
+    {
+        get
+        {
+            // 플레이어가 오른쪽을 보고 있을 때 (타격지점의 순서가 정방향)
+            if (transform.localScale.x > 0f)
+            {
+                return minAttackSpot;
+            }
+            // 플레이어가 왼쪽을 보고 있을 때 (타격지점의 순서가 역방향)
+            else
+            {
+                return maxAttackSpot;
+            }
+        }
+    }
 
     // 플레이어의 최대 타격 지점과 프로퍼티
     [SerializeField]
     private Transform maxAttackSpot;
-    public Transform MaxAttackSpot => maxAttackSpot;
+    public Transform MaxAttackSpot
+    {
+        get
+        {
+            // 플레이어가 오른쪽을 보고 있을 때 (타격지점의 순서가 정방향)
+            if (transform.localScale.x > 0f)
+            {
+                return maxAttackSpot;
+            }
+            // 플레이어가 왼쪽을 보고 있을 때 (타격지점의 순서가 역방향)
+            else
+            {
+                return minAttackSpot;
+            }
+        }
+    }
 
     // 피격 애니메이션 재생시간
     private const float HURT_ANIMATION_DURATION = 0.3f;

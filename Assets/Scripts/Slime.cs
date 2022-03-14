@@ -44,13 +44,45 @@ public class Slime : MonoBehaviour
     // 슬라임 사망 시 회전할 때의 속도
     private const float ROTATE_SPEED = 250.0f;
 
-    // 슬라임의 최소 피격지점
+    // 슬라임의 최소 피격지점과 프로퍼티
     [SerializeField]
     private Transform minHitSpot;
+    private Transform MinHitSpot
+    {
+        get
+        {
+            // 플레이어가 왼쪽을 보고 있을 때 (타격지점의 순서가 정방향)
+            if (transform.localScale.x > 0f)
+            {
+                return minHitSpot;
+            }
+            // 플레이어가 오른쪽을 보고 있을 때 (타격지점의 순서가 역방향)
+            else
+            {
+                return maxHitSpot;
+            }
+        }
+    }
 
-    // 슬라임의 최대 피격지점
+    // 슬라임의 최대 피격지점과 프로퍼티
     [SerializeField]
     private Transform maxHitSpot;
+    private Transform MaxHitSpot
+    {
+        get
+        {
+            // 플레이어가 왼쪽을 보고 있을 때 (타격지점의 순서가 정방향)
+            if (transform.localScale.x > 0f)
+            {
+                return maxHitSpot;
+            }
+            // 플레이어가 오른쪽을 보고 있을 때 (타격지점의 순서가 역방향)
+            else
+            {
+                return minHitSpot;
+            }
+        }
+    }
 
     private void Awake()
     {
@@ -117,11 +149,10 @@ public class Slime : MonoBehaviour
         Transform playerMaxAttackSpot = playerObject.GetComponent<PlayerController>().MaxAttackSpot;
 
         // 플레이어의 타격 지점이 슬라임의 피격 지점보다 위에 있고,
-        // 플레이어의 최소, 최대 타격 지점 중 한 곳이라도 슬라임의 피격지점 사이에 있다면 플레이어는 슬라임을 공격할 수 있다.ㄴ
-        if (playerBody.velocity.y < 0f && 
-            playerMinAttackSpot.position.y >= minHitSpot.position.y &&
-            ((playerMinAttackSpot.position.x >= minHitSpot.position.x && playerMinAttackSpot.position.x <= maxHitSpot.position.x) ||
-            (playerMaxAttackSpot.position.x >= minHitSpot.position.x && playerMaxAttackSpot.position.x <= maxHitSpot.position.x)))
+        // 플레이어의 최소, 최대 타격 지점 중 한 곳이라도 슬라임의 피격지점 사이에 있다면 플레이어는 슬라임을 공격할 수 있다.
+        if (playerBody.velocity.y < 0f && playerMinAttackSpot.position.y >= minHitSpot.position.y &&
+            ((playerMinAttackSpot.position.x >= MinHitSpot.position.x && playerMinAttackSpot.position.x <= MaxHitSpot.position.x) ||
+             (playerMaxAttackSpot.position.x >= MinHitSpot.position.x && playerMaxAttackSpot.position.x <= MaxHitSpot.position.x)))
         {
             return true;
         }
