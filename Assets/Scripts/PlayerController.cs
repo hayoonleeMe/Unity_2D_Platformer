@@ -34,8 +34,10 @@ public class PlayerController : MonoBehaviour
     // 오브젝트에만 적용하는 오브젝트가 올라갈때의 중력 값
     private const float IN_AIR_GRAVITY_SCALE = 5.0f;
 
+    // 현재 가능한 점프 횟수
     public int jumpCount;
 
+    // 최대 점프 횟수
     private int maxJumpCount = 2;
 
     // 스페이스바를 누르고 있는지를 나타내는 상태변수
@@ -51,14 +53,15 @@ public class PlayerController : MonoBehaviour
     private bool isHurt = false;
     public bool IsHurt => isHurt;
 
-    // 플레이어가 적을 밟아서 공격할 때의 y좌표를 반환하는 프로퍼티
-    public float AttackSpotY => transform.position.y - spriteRenderer.bounds.size.y / 2;
+    // 플레이어의 최소 타격 지점과 프로퍼티
+    [SerializeField]
+    private Transform minAttackSpot;
+    public Transform MinAttackSpot => minAttackSpot;
 
-    // 플레이어가 적을 밟아서 공격할 때의 최소 x좌표를 반환하는 프로퍼티
-    public float AttackSpotMinX => transform.position.x - spriteRenderer.bounds.size.x / 2;
-
-    // 플레이어가 적을 밟아서 공격할 때의 최대 x좌표를 반환하는 프로퍼티
-    public float AttackSpotMaxX => transform.position.x + spriteRenderer.bounds.size.x / 2;
+    // 플레이어의 최대 타격 지점과 프로퍼티
+    [SerializeField]
+    private Transform maxAttackSpot;
+    public Transform MaxAttackSpot => maxAttackSpot;
 
     // 피격 애니메이션 재생시간
     private const float HURT_ANIMATION_DURATION = 0.3f;
@@ -90,9 +93,13 @@ public class PlayerController : MonoBehaviour
         // 키보드 입력을 받아서 플레이어의 이동방향을 정한다.
         float x = Input.GetAxisRaw("Horizontal");
 
-        // 이동방향에 맞춰 플레이어의 스프라이트를 회전시킨다.
-        if (x < 0) spriteRenderer.flipX = true;
-        else if (x > 0) spriteRenderer.flipX = false;
+        // 이동방향에 맞춰 플레이어의 스프라이트를 좌우로 반전시킨다.
+        if (transform.localScale.x * x < 0f)
+        {
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+        }
 
         // 플레이어를 이동시킨다.
         movement2D.MoveTo(new Vector2(x, 0.0f));

@@ -26,6 +26,7 @@ public class Slime : MonoBehaviour
     [SerializeField]
     private float normalBouncePower;
 
+    // 플레이어 오브젝트
     private GameObject playerObject = null;
 
     // 슬라임의 다음 방향
@@ -43,17 +44,13 @@ public class Slime : MonoBehaviour
     // 슬라임 사망 시 회전할 때의 속도
     private const float ROTATE_SPEED = 250.0f;
 
-    // 슬라임이 밟혔을 때 진행하던 방향
-    private bool deadFlipX;
+    // 슬라임의 최소 피격지점
+    [SerializeField]
+    private Transform minHitSpot;
 
-    // 슬라임이 타격 당하는 지점의 y좌표를 반환하는 프로퍼티
-    public float HitSpotY => transform.position.y + polygonCollider2D.points[1].y * transform.localScale.y;
-
-    // 슬라임이 타격 당하는 지점의 최소 x좌표를 반환하는 프로퍼티
-    public float HitSpotMinX => transform.position.x + polygonCollider2D.points[0].x * transform.localScale.x;
-    
-    // 슬라임이 타격 당하는 지점의 최대 x좌표를 반환하는 프로퍼티
-    public float HitSpotMaxX => transform.position.x + polygonCollider2D.points[4].x * transform.localScale.x;
+    // 슬라임의 최대 피격지점
+    [SerializeField]
+    private Transform maxHitSpot;
 
     private void Awake()
     {
@@ -115,11 +112,16 @@ public class Slime : MonoBehaviour
     // 플레이어가 슬라임을 공격할 수 있는지를 반환한다.
     private bool CanPlayerAttackSlime()
     {
+        Rigidbody2D playerBody = playerObject.GetComponent<Rigidbody2D>();
+        Transform playerMinAttackSpot = playerObject.GetComponent<PlayerController>().MinAttackSpot;
+        Transform playerMaxAttackSpot = playerObject.GetComponent<PlayerController>().MaxAttackSpot;
+
         // 플레이어의 타격 지점이 슬라임의 피격 지점보다 위에 있고,
-        // pivot 이 정중앙인 플레이어의 position 이 슬라임의 피격 지점 내부에 있다면 플레이어는 슬라임을 공격할 수 있다.
-        if (playerObject.GetComponent<PlayerController>().AttackSpotY >= HitSpotY &&
-           ((playerObject.GetComponent<PlayerController>().AttackSpotMinX >= HitSpotMinX && playerObject.GetComponent<PlayerController>().AttackSpotMinX <= HitSpotMaxX) ||
-           (playerObject.GetComponent<PlayerController>().AttackSpotMaxX >= HitSpotMinX && playerObject.GetComponent<PlayerController>().AttackSpotMaxX <= HitSpotMaxX)))
+        // 플레이어의 최소, 최대 타격 지점 중 한 곳이라도 슬라임의 피격지점 사이에 있다면 플레이어는 슬라임을 공격할 수 있다.ㄴ
+        if (playerBody.velocity.y < 0f && 
+            playerMinAttackSpot.position.y >= minHitSpot.position.y &&
+            ((playerMinAttackSpot.position.x >= minHitSpot.position.x && playerMinAttackSpot.position.x <= maxHitSpot.position.x) ||
+            (playerMaxAttackSpot.position.x >= minHitSpot.position.x && playerMaxAttackSpot.position.x <= maxHitSpot.position.x)))
         {
             return true;
         }
