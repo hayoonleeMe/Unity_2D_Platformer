@@ -121,10 +121,10 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         // 키보드 입력을 받아서 플레이어의 이동방향을 정한다.
-        float x = Input.GetAxisRaw("Horizontal");
+        float horizontal = Input.GetAxisRaw("Horizontal");
 
         // 이동방향에 맞춰 플레이어의 스프라이트를 좌우로 반전시킨다.
-        if (transform.localScale.x * x < 0f)
+        if (transform.localScale.x * horizontal < 0f)
         {
             Vector3 scale = transform.localScale;
             scale.x *= -1;
@@ -132,15 +132,11 @@ public class PlayerController : MonoBehaviour
         }
 
         // 플레이어를 이동시킨다.
-        movement2D.MoveTo(new Vector2(x, 0.0f));
+        movement2D.MoveTo(new Vector2(horizontal, 0.0f));
 
         // 걷기 애니메이션을 실행한다.
         // 점프 중에는 점프 애니메이션만 실행한다.
-        bool walk = (x != 0) ? true : false;
-        if (!isInAir)
-        { 
-            animator.SetBool("onWalk", walk);
-        }
+        animator.SetFloat("speed", Mathf.Abs(horizontal));
 
         //IntensityControlJump();
         MultipleJump();
@@ -161,7 +157,7 @@ public class PlayerController : MonoBehaviour
         if (IsGrounded)
         {
             isInAir = false;
-            animator.SetBool("onFall", isInAir);
+            animator.SetBool("isJumping", isInAir);
             rigidBody2D.gravityScale = 1.0f;
 
             if (!isSpaceDown && jumpCount != maxJumpCount)
@@ -172,14 +168,8 @@ public class PlayerController : MonoBehaviour
         // 플레이어가 공중에 있을 때
         else
         {
-            // 공중에서 걷는 애니메이션이 실행중이라면 중단한다.
-            if (animator.GetBool("onWalk"))
-            {
-                animator.SetBool("onWalk", false);
-            }
-
             isInAir = true;
-            animator.SetBool("onFall", isInAir);
+            animator.SetBool("isJumping", isInAir);
         }
 
         // 플레이어 오브젝트가 점프를 할 때 중력 값을 조절한다.
@@ -291,11 +281,11 @@ public class PlayerController : MonoBehaviour
     // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴
     private IEnumerator BounceRoutine()
     {   
-        animator.SetBool("onHurt", true);
+        animator.SetBool("isHurt", true);
 
         yield return hurtAnimationDuration;
 
-        animator.SetBool("onHurt", false);
+        animator.SetBool("isHurt", false);
         isHurt = false;
     }
 }
