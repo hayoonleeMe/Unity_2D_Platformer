@@ -96,6 +96,10 @@ public class PlayerController : MonoBehaviour
     // 피격 애니메이션 재생시간
     private const float HURT_ANIMATION_DURATION = 0.3f;
 
+    // 점수를 관리하는 오브젝트
+    [SerializeField]
+    private ManageScore manageScore;
+
     /// <summary>
     /// 객체를 미리 만들어 두는 게 퍼포먼스에 관련있는지 확인 필요
     /// -> 코루틴 최적화 필요
@@ -287,5 +291,11 @@ public class PlayerController : MonoBehaviour
 
         animator.SetBool("isHurt", false);
         isHurt = false;
+    }
+
+    // amount만큼의 점수를 업데이트한다.
+    public void AddScore(int amount)
+    {
+        manageScore.updateScore(amount);
     }
 }

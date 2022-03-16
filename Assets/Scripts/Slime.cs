@@ -84,6 +84,9 @@ public class Slime : MonoBehaviour
         }
     }
 
+    // 슬라임의 점수
+    private int score;
+
     private void Awake()
     {
         movement2D = GetComponent<Movement2D>();
@@ -91,6 +94,8 @@ public class Slime : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         polygonCollider2D = GetComponent<PolygonCollider2D>();
         animator = GetComponent<Animator>();
+
+        score = 500;
     }
 
     private void Start()
@@ -134,6 +139,8 @@ public class Slime : MonoBehaviour
             {
                 // 플레이어를 튀어오르게 한다.
                 playerObject.GetComponent<PlayerController>().Bounce(normalBouncePower);
+                // 슬라임의 점수를 추가한다.
+                playerObject.GetComponent<PlayerController>().AddScore(score);
 
                 // 슬라임은 소멸한다.
                 OnDie();
