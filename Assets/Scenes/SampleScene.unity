@@ -123,6 +123,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &99883457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 99883459}
+  - component: {fileID: 99883458}
+  m_Layer: 0
+  m_Name: JumpEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &99883458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99883457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b273d8274bc1cc438a679e552a0f9f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpEffectPrefab: {fileID: 8935550840921974054, guid: 22214a134716fcf43930d11ea9e8b9b3, type: 3}
+--- !u!4 &99883459
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 99883457}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &211092552
 GameObject:
   m_ObjectHideFlags: 0
@@ -260,7 +304,7 @@ MonoBehaviour:
   minAttackSpot: {fileID: 841824097}
   maxAttackSpot: {fileID: 412146954}
   manageScore: {fileID: 1871001481}
-  jumpEffectPrefab: {fileID: 4308180103875753274, guid: 4ba20ddef22fa5b43af46f4384ab9236, type: 3}
+  jumpEffectManager: {fileID: 99883458}
 --- !u!114 &467330927
 MonoBehaviour:
   m_ObjectHideFlags: 0

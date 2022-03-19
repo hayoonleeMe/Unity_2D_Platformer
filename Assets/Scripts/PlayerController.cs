@@ -29,7 +29,7 @@ public class PlayerController : MonoBehaviour
     private float MAX_JUMP_AMOUNT = 22.0f;
 
     // 최소 점프 운동량
-    private float MIN_JUMP_AMOUNT = 15.0f;
+    private float MIN_JUMP_AMOUNT = 15.0f;                   
 
     // 오브젝트에만 적용하는 오브젝트가 올라갈때의 중력 값
     private const float IN_AIR_GRAVITY_SCALE = 5.0f;
@@ -101,7 +101,7 @@ public class PlayerController : MonoBehaviour
     private ManageScore manageScore;
 
     [SerializeField]
-    private GameObject jumpEffectPrefab;
+    private ManageJumpEffect jumpEffectManager;
 
     /// <summary>
     /// 객체를 미리 만들어 두는 게 퍼포먼스에 관련있는지 확인 필요
@@ -123,6 +123,8 @@ public class PlayerController : MonoBehaviour
         tilemapFilter.SetNormalAngle(45.0f, 135.0f);
 
         jumpCount = maxJumpCount;
+
+        jumpEffectManager.SetJumpCount(maxJumpCount);
     }
 
     private void Update()
@@ -215,10 +217,7 @@ public class PlayerController : MonoBehaviour
                 // 더블점프 이펙트 애니메이션 재생
                 if (jumpCount != maxJumpCount)
                 {
-                    Vector3 effectPos = transform.position;
-                    effectPos.y -= 0.1f;
-                    
-                    Instantiate(jumpEffectPrefab, effectPos, Quaternion.identity);
+                    jumpEffectManager.PlayEffect(transform.position);
                 }
 
                 Jump();
