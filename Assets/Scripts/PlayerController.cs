@@ -100,6 +100,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private ManageScore manageScore;
 
+    [SerializeField]
+    private GameObject jumpEffectPrefab;
+
     /// <summary>
     /// 객체를 미리 만들어 두는 게 퍼포먼스에 관련있는지 확인 필요
     /// -> 코루틴 최적화 필요
@@ -209,6 +212,15 @@ public class PlayerController : MonoBehaviour
 
             if (jumpCount > 0f)
             {
+                // 더블점프 이펙트 애니메이션 재생
+                if (jumpCount != maxJumpCount)
+                {
+                    Vector3 effectPos = transform.position;
+                    effectPos.y -= 0.1f;
+                    
+                    Instantiate(jumpEffectPrefab, effectPos, Quaternion.identity);
+                }
+
                 Jump();
                 --jumpCount;
             }
