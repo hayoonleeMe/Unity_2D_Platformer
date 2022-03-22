@@ -276,7 +276,7 @@ public class PlayerController : MonoBehaviour
         if (mode == BounceMode.Damage)
         {
             isHurt = true;
-            StartCoroutine(BounceRoutine());
+            StartCoroutine(DamageBounceRoutine());
         }
     }
 
@@ -289,12 +289,12 @@ public class PlayerController : MonoBehaviour
         if (mode == BounceMode.Damage)
         {
             isHurt = true;
-            StartCoroutine(BounceRoutine());
+            StartCoroutine(DamageBounceRoutine());
         }
     }
 
     // Hurt 애니메이션을 재생한 후 HURT_ANIMATION_DURATION 이후 Hurt 애니메이션을 끄는 코루틴
-    private IEnumerator BounceRoutine()
+    private IEnumerator DamageBounceRoutine()
     {   
         animator.SetBool("isHurt", true);
 
