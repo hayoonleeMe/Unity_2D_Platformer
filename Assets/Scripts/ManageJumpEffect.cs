@@ -7,7 +7,7 @@ public class ManageJumpEffect: MonoBehaviour
     private GameObject jumpEffectPrefab;
     
     // 점프 이펙트의 위치를 설정하는데 사용하는 오프셋
-    private float offsetY = -0.1f;
+    private float offsetY = -0.3f;
 
     // 플레이어가 점프할 수 있는 최대 횟수
     // PlayerController 스크립트의 Awake 에서 SetJumpCount 메소드를 통해 설정한다.

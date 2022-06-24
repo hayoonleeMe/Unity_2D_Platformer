@@ -177,6 +177,13 @@ public class PlayerController : MonoBehaviour
         // 플레이어가 공중에 있을 때
         else
         {
+            // 땅 위에 있다가 점프없이 공중에 있게 될 경우
+            if (isSpaceDown == false && isInAir == false)
+            {
+                // 점프 횟수를 차감한다.
+                --jumpCount;
+            }
+
             isInAir = true;
             animator.SetBool("isJumping", isInAir);
         }
