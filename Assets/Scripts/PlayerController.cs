@@ -4,6 +4,16 @@ using Environment;
 
 public class PlayerController : MonoBehaviour
 {
+    // 플레이어의 상태를 나타내는 enum 변수와 프로퍼티
+    private PlayerStatus status;
+    public PlayerStatus Status
+    {
+        set
+        {
+            status = value;
+        }
+    }
+
     private Movement2D movement2D;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -113,10 +123,18 @@ public class PlayerController : MonoBehaviour
         jumpCount = maxJumpCount;
 
         jumpEffectManager.SetJumpCount(maxJumpCount);
+
+        status = PlayerStatus.Normal;
     }
 
     private void Update()
     {
+        // 플레이어의 상태가 움직일 수 없는 상태이면 이동, 점프를 방지한다.
+        if (status == PlayerStatus.NoMove)
+        {
+            return;
+        }
+
         // 키보드 입력을 받아서 플레이어의 이동방향을 정한다.
         float horizontal = Input.GetAxisRaw("Horizontal");
 
@@ -180,6 +198,13 @@ public class PlayerController : MonoBehaviour
         {
             rigidBody2D.gravityScale = IN_AIR_GRAVITY_SCALE;
         }
+    }
+
+    public void RestrictMove()
+    {
+        status = PlayerStatus.NoMove;
+        movement2D.MoveTo(Vector2.zero);
+        animator.SetFloat("speed", 0f);
     }
 
     // 플레이어 오브젝트를 점프시키는 메소드

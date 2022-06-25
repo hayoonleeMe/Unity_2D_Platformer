@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Environment;
 
 public class PlayerHP : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class PlayerHP : MonoBehaviour
 
     // 플레이어 오브젝트의 스프라이트 렌더러
     private SpriteRenderer spriteRenderer;
+    private PlayerController playerController;
 
     // 캔버스
     [SerializeField]
@@ -49,6 +51,7 @@ public class PlayerHP : MonoBehaviour
     private void Awake()
     { 
         spriteRenderer = GetComponent<SpriteRenderer>();
+        playerController = GetComponent<PlayerController>();
 
         currentHP = maxHP;
     }
@@ -100,6 +103,9 @@ public class PlayerHP : MonoBehaviour
     // 시간을 조절하여 플레이어 사망 연출을 나타내는 코루틴
     private IEnumerator DelayedDeadAnimationCoroutine()
     {
+        // 플레이어의 이동, 점프를 방지한다.
+        playerController.RestrictMove();
+
         Time.timeScale = 0.01f;
         yield return new WaitForSeconds(0.005f);
 

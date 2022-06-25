@@ -7,4 +7,10 @@ public class ButtonEvent : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    public void NextStageSceneLoader()
+    {
+        Debug.Log("There is no next stage");
+        SceneManager.LoadScene("Intro");
+    }
 }
