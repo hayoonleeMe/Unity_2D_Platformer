@@ -16,20 +16,8 @@ public class PlayerController : MonoBehaviour
     // 플레이어 오브젝트의 접촉을 필터링한다.
     private ContactFilter2D tilemapFilter;
 
-    // 플레이어의 초기 위치
-    private Vector2 initialPos = new Vector2(0.0f, -0.3f); 
-
     // 점프에 가해지는 운동량
     private float jumpAmount = 16f;
-
-    // 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
-    private float jumpOffset = 0.05f;
-
-    // 최대 점프 운동량
-    private float MAX_JUMP_AMOUNT = 22.0f;
-
-    // 최소 점프 운동량
-    private float MIN_JUMP_AMOUNT = 15.0f;                   
 
     // 오브젝트에만 적용하는 오브젝트가 올라갈때의 중력 값
     private const float IN_AIR_GRAVITY_SCALE = 5.0f;
@@ -149,7 +137,6 @@ public class PlayerController : MonoBehaviour
 
         //IntensityControlJump();
         MultipleJump();
-        
     }
 
     private void LateUpdate()
@@ -195,12 +182,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 플레이어를 초기화 시킨다.
-    public void InitializeControl()
-    {
-        transform.position = initialPos;
-    }
-
     // 플레이어 오브젝트를 점프시키는 메소드
     private void Jump()
     {
@@ -236,42 +217,6 @@ public class PlayerController : MonoBehaviour
         {
             isSpaceDown = false;
         }
-    }
-
-    // 스페이스바를 키다운해 점프의 세기를 조절한다.
-    private void IntensityControlJump()
-    {
-        // 스페이스바를 키다운중이 아닐때만 스페이스바를 누르는지 체크한다.
-        if (!isSpaceDown)
-        {
-            isSpaceDown = Input.GetKeyDown(KeyCode.Space);
-        }
-
-        // 점프중이 아니면서 스페이스바를 키다운 중이면 점프를 준비한다.
-        // 스페이스바를 키다운할수록 플레이어가 점프하는 높이가 커진다.
-        if (isSpaceDown && !isInAir)
-        {
-            PrepareJump();
-        }
-
-        // 스페이스바를 떼면 정해진 점프 운동량만큼 플레이어가 점프한다.
-        bool spaceUp = Input.GetKeyUp(KeyCode.Space);
-        if (spaceUp && !isInAir)
-        {
-            isSpaceDown = false;
-            Jump();
-            jumpAmount = MIN_JUMP_AMOUNT;
-        }
-    }
-
-    // 스페이스바를 키다운할 때 호출되는 함수
-    // 점프에 가해지는 운동량이 점점 늘어난다.
-    private void PrepareJump()
-    {
-        // 매 프레임마다 점프 운동량이 늘어난다.
-        jumpAmount += jumpOffset;
-        // 최대 점프 운동량을 넘지 않는다.
-        jumpAmount = Mathf.Clamp(jumpAmount, MIN_JUMP_AMOUNT, MAX_JUMP_AMOUNT);
     }
 
     // 플레이어가 장애물에 닿았을 때, 뒤로 밀려나게 한다.
@@ -316,4 +261,60 @@ public class PlayerController : MonoBehaviour
     {
         manageScore.updateScore(amount);
     }
+
+    #region Not Use - 강도 조절 점프 관련 변수들
+    // Not Use - 스페이스바를 키다운할때 매 프레임마다 jumpAmount에 더해지는 offset 
+    //private float jumpOffset = 0.05f;
+
+    // Not Use - 최대 점프 운동량
+    //private float MAX_JUMP_AMOUNT = 22.0f;
+
+    // Not Use - 최소 점프 운동량
+    //private float MIN_JUMP_AMOUNT = 15.0f;                   
+    #endregion
+
+    #region For Debugging - public void InitializeControl() 플레이어를 초기화하는 함수 
+    //public void InitializeControl()
+    //{
+    //    transform.position = initialPos;
+    //}
+    #endregion
+
+    #region Not Use - private void IntensityControlJump() 스페이스바를 키다운해 점프의 세기를 조절하는 함수
+    //private void IntensityControlJump()
+    //{
+    //    // 스페이스바를 키다운중이 아닐때만 스페이스바를 누르는지 체크한다.
+    //    if (!isSpaceDown)
+    //    {
+    //        isSpaceDown = Input.GetKeyDown(KeyCode.Space);
+    //    }
+
+    //    // 점프중이 아니면서 스페이스바를 키다운 중이면 점프를 준비한다.
+    //    // 스페이스바를 키다운할수록 플레이어가 점프하는 높이가 커진다.
+    //    if (isSpaceDown && !isInAir)
+    //    {
+    //        PrepareJump();
+    //    }
+
+    //    // 스페이스바를 떼면 정해진 점프 운동량만큼 플레이어가 점프한다.
+    //    bool spaceUp = Input.GetKeyUp(KeyCode.Space);
+    //    if (spaceUp && !isInAir)
+    //    {
+    //        isSpaceDown = false;
+    //        Jump();
+    //        jumpAmount = MIN_JUMP_AMOUNT;
+    //    }
+    //}
+    #endregion
+
+    # region Not Use - private void PrepareJump() 스페이스바를 키다운할 때 호출되는 함수
+    // 점프에 가해지는 운동량이 점점 늘어난다.
+    //private void PrepareJump()
+    //{
+    //    // 매 프레임마다 점프 운동량이 늘어난다.
+    //    jumpAmount += jumpOffset;
+    //    // 최대 점프 운동량을 넘지 않는다.
+    //    jumpAmount = Mathf.Clamp(jumpAmount, MIN_JUMP_AMOUNT, MAX_JUMP_AMOUNT);
+    //}
+    #endregion
 }

@@ -6,4 +6,9 @@ namespace Environment
         Damage = 1
     }
 
+    public enum PlayerStatus
+    {
+        Normal = 0,
+        Dead = 1
+    }
 }

@@ -21,7 +21,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            // Àû »ı¼º 
+            // ì  ìƒì„± 
             Instantiate(slimePrefab, pos1, Quaternion.identity);
             Instantiate(slimePrefab, pos2, Quaternion.identity);
         }

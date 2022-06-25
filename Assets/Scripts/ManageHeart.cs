@@ -47,7 +47,7 @@ public class ManageHeart : MonoBehaviour
         if (damage == 0)
         {
             return;
-        }    
+        }
 
         for (int i = (int)playerHP.CurrentHP - 1; i >= (int)playerHP.CurrentHP - damage; --i)
         {
@@ -55,12 +55,13 @@ public class ManageHeart : MonoBehaviour
         }
     }
 
-    // 하트 UI 를 초기화 시킨다.
-    public void InitializeHeart()
-    {
-        for (int i = 0; i < hearts.Length; ++i)
-        {
-            hearts[i].sprite = heartSprites[FULL];
-        }
-    }
+    #region For Debugging - public void InitializeHeart() 하트 UI 를 초기화 시킨다.
+    //public void InitializeHeart()
+    //{
+    //    for (int i = 0; i < hearts.Length; ++i)
+    //    {
+    //        hearts[i].sprite = heartSprites[FULL];
+    //    }
+    //}
+    #endregion
 }

@@ -4,6 +4,10 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHP : MonoBehaviour
 {
+    // PlayerHurt Animation clip
+    [SerializeField]
+    private AnimationClip playerHurt;
+
     // 다음 씬의 이름
     [SerializeField]
     private string nextSceneName;
@@ -14,7 +18,6 @@ public class PlayerHP : MonoBehaviour
 
     // 플레이어 오브젝트의 스프라이트 렌더러
     private SpriteRenderer spriteRenderer;
-    private PlayerController playerController;
 
     // 캔버스
     [SerializeField]
@@ -46,7 +49,6 @@ public class PlayerHP : MonoBehaviour
     private void Awake()
     { 
         spriteRenderer = GetComponent<SpriteRenderer>();
-        playerController = GetComponent<PlayerController>();
 
         currentHP = maxHP;
     }
@@ -56,15 +58,15 @@ public class PlayerHP : MonoBehaviour
         blinkEffectRoutine = BlinkEffectRoutine();
     }
 
-    // 플레이어를 초기화 시킨다.
-    private void InitializeHP()
-    {
-        currentHP = maxHP;
-    }
-
     // damage 만큼 플레이어의 체력이 하락한다.
     public void TakeDamage(float damage)
     {
+        // 현재 플레이어의 남은 체력보다 데미지가 더 크다면
+        if (currentHP - damage < 0)
+        {
+            damage = currentHP;
+        }
+
         manageHeart.ApplyDamageToHeart(damage);
         currentHP -= damage;
 
@@ -81,14 +83,33 @@ public class PlayerHP : MonoBehaviour
     // 플레이어가 죽을 때 호출된다.
     private void OnDie()
     {
-        // 플레이어를 초기화시킨다. (for Test)
+        #region For Test - 플레이어를 초기화시킨다.
         //Debug.Log("Player is Die");
         //playerController.InitializeControl();
         //InitializeHP();
         //manageHeart.InitializeHeart();
+        #endregion
 
         // GameOver Scene에서 나타낼 Score를 저장한다.
         PlayerPrefs.SetInt("score", manageScore.getScore());
+
+        // 플레이어 사망 연출을 실행하고 GameOver Scene으로 이동한다.
+        StartCoroutine(DelayedDeadAnimationCoroutine());
+    }
+
+    // 시간을 조절하여 플레이어 사망 연출을 나타내는 코루틴
+    private IEnumerator DelayedDeadAnimationCoroutine()
+    {
+        Time.timeScale = 0.01f;
+        yield return new WaitForSeconds(0.005f);
+
+        Time.timeScale = 0.2f;
+        yield return new WaitForSeconds(playerHurt.length * 0.4f * 0.2f);
+
+        Time.timeScale = 0.5f;
+        yield return new WaitForSeconds(playerHurt.length * 0.4f * 0.5f);
+
+        Time.timeScale = 1.0f;
 
         // GameOver Scene으로 이동한다.
         SceneManager.LoadScene(nextSceneName);
@@ -124,4 +145,11 @@ public class PlayerHP : MonoBehaviour
         isHit = false;
         StopCoroutine(blinkEffectRoutine);
     }
+
+    #region For Debugging - private void InitializeHP() 플레이어를 초기화시키는 함수
+    //private void InitializeHP()
+    //{
+    //    currentHP = maxHP;
+    //}
+    #endregion
 }
