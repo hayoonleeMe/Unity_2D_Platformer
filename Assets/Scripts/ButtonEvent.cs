@@ -13,4 +13,14 @@ public class ButtonEvent : MonoBehaviour
         Debug.Log("There is no next stage");
         SceneManager.LoadScene("Intro");
     }
+
+    public void Quit()
+    {
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #else
+            Application.Quit();
+        #endif
+    }
+
 }
