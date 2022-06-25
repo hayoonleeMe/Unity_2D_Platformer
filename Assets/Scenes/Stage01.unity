@@ -482,6 +482,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50ceeec0683ea1546a330e34922bf96b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  nextSceneName: GameOver
+  manageScore: {fileID: 1871001481}
   manageHeart: {fileID: 1116034323}
   maxHP: 5
   hitDelay: 1.2
@@ -653,7 +655,7 @@ GameObject:
   - component: {fileID: 801015110}
   - component: {fileID: 801015108}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TextScore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

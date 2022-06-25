@@ -27,4 +27,10 @@ public class ManageScore : MonoBehaviour
 
         scoreViewer.UpdateText(score);
     }
+
+    // 점수를 반환한다.
+    public int getScore()
+    {
+        return score;
+    }
 }

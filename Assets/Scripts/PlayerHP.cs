@@ -1,8 +1,17 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHP : MonoBehaviour
 {
+    // 다음 씬의 이름
+    [SerializeField]
+    private string nextSceneName;
+
+    // scoreManager의 ManageScore 스크립트
+    [SerializeField]
+    private ManageScore manageScore;
+
     // 플레이어 오브젝트의 스프라이트 렌더러
     private SpriteRenderer spriteRenderer;
     private PlayerController playerController;
@@ -72,12 +81,17 @@ public class PlayerHP : MonoBehaviour
     // 플레이어가 죽을 때 호출된다.
     private void OnDie()
     {
-        Debug.Log("Player is Die");
+        // 플레이어를 초기화시킨다. (for Test)
+        //Debug.Log("Player is Die");
+        //playerController.InitializeControl();
+        //InitializeHP();
+        //manageHeart.InitializeHeart();
 
-        // 플레이어를 초기화시킨다.
-        playerController.InitializeControl();
-        InitializeHP();
-        manageHeart.InitializeHeart();
+        // GameOver Scene에서 나타낼 Score를 저장한다.
+        PlayerPrefs.SetInt("score", manageScore.getScore());
+
+        // GameOver Scene으로 이동한다.
+        SceneManager.LoadScene(nextSceneName);
     }
 
     // 깜빡임 애니메이션을 구현하는 코루틴
